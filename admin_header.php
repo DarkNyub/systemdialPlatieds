@@ -181,7 +181,6 @@ if ( ($SSweb_logo!='default_new') and ($SSweb_logo!='default_old') )
 		}
 	}
 
-
 ##### BEGIN populate dynamic header content #####
 if ($hh=='users') 
 	{
@@ -1779,7 +1778,7 @@ if ( ($SSadmin_modify_refresh > 1) and (preg_match("/^3|^4/",$ADD)) )
 	}
 else
 	{
-	echo "<BODY BGCOLOR=white marginheight=0 marginwidth=0 leftmargin=0 topmargin=0>\n";
+	echo "<BODY class=\"hold-transition sidebar-mini layout-fixed\">\n";
 	}
 	
 echo "<!-- INTERNATIONALIZATION-LINKS-PLACEHOLDER-VICIDIAL -->\n";
@@ -1792,6 +1791,440 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 
 
 ?>
+<!-- agregacion del plantilla -->
+
+
+<!-- Navbar -->
+	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+		<!-- Left navbar links -->
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+			</li>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="<?php echo $admin_home_url_LU ?>" class="nav-link"><?php echo _QXZ("HOME"); ?></a>
+			</li>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="../agc/timeclock.php?referrer=admin" class="nav-link"><?php echo _QXZ("Timeclock"); ?></a>
+			</li>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="manager_chat_interface.php" class="nav-link"><?php echo _QXZ("Chat"); ?></a>
+			</li>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="<?php echo $ADMIN ?>?force_logout=1" class="nav-link"><?php echo _QXZ("Logout"); ?></a>
+			</li>
+			<?php
+				if ($SSenable_languages == '1')
+				{
+						echo "<li class=\"nav-item d-none d-sm-inline-block\">";
+							echo "<a href=\"$ADMIN?ADD=999989\" class=\"nav-link\">"._QXZ("Change language")."</a>";
+						echo "</li>";
+				}
+			?>
+		</ul>
+		<!-- Right navbar links -->
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a class="nav-link"><?php echo date("l F j, Y G:i:s A") ?></a>
+			</li>
+		</ul>
+	</nav>
+<!-- /.navbar -->
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<!-- Brand Logo -->
+	<a href="index3.html" class="brand-link">
+		<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-light">&nbsp;</span>
+	</a>
+
+<!-- Sidebar -->
+	<div class="sidebar">
+		<!-- Sidebar user panel (optional) -->
+		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+			<div class="info">
+				<a href="#" class="d-block"><?php echo $PHP_AUTH_USER ?></a>
+			</div>
+		</div>
+		<!-- Sidebar Menu -->
+		<nav class="mt-2">
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				<li class="nav-item">
+					<a href="./admin.php" class="nav-link <?php if($hh=='main') echo 'active'; ?>"><i class="nav-icon fas fa-file"></i><p><?php echo _QXZ("HOME"); ?></p></a>
+				</li>
+				<li class="nav-item">
+					<a href="<?php echo $ADMIN ?>?ADD=999999" class="nav-link <?php if($hh=='reports') echo 'active'; ?>"><i class="nav-icon fas fa-file"></i><p><?php echo _QXZ("Reports"); ?></p></a>
+				</li>
+				<li class="nav-item <?php if($hh=='users') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=0A"; ?>'"> <!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=0A" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Users"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=0A" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Users"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=1" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New User"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=1A" class="nav-link <?php if($sh=='copy') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy User"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=550" class="nav-link <?php if($sh=='search') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Search For A User"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="./user_stats.php?user=<?php echo $user ?>" class="nav-link <?php if($sh=='stats') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("User Stats"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="./user_status.php?user=<?php echo $user ?>" class="nav-link <?php if($sh=='status') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("User Status"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="./AST_agent_time_sheet.php?agent=<?php echo $user ?>" class="nav-link <?php if($sh=='sheet') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Time Sheet"); ?></p></a>
+						</li>
+						<?php
+						if ( ($SSuser_territories_active > 0) or ($user_territories_active > 0) )
+						{ ?>
+						<li class="nav-item d-none">
+							<a href="./user_territories.php?agent=<?php echo $user ?>" class="nav-link <?php if($sh=='territory') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("User Territories"); ?></p></a>
+						</li>
+						<?php
+						}
+						if ($SSuser_new_lead_limit > 0)
+						{ ?>
+						<li class="nav-item d-none">
+							<a href="./admin_user_list_new.php?user=---ALL---&list_id=NONE&stage=overall" class="nav-link <?php if($sh=='newlimit') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Overall New Lead Limits"); ?></p></a>
+						</li>
+						<?php 
+						}
+						?>
+					</ul>
+				</li>
+				<li class="nav-item <?php if($hh=='campaigns') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=10"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=10" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Campaigns"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=10" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Campaigns Main"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="?php echo $ADMIN ?>?ADD=32" class="nav-link <?php if($sh=='status') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Statuses"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=33" class="nav-link <?php if($sh=='hotkey') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("HotKeys"); ?></p></a>
+						</li>
+						<?php
+						if ($SSoutbound_autodial_active > 0)
+						{
+						?>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=35" class="nav-link <?php if($sh=='recycle') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Lead Recycle"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=36" class="nav-link <?php if($sh=='autoalt') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Auto-Alt Dials"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=39" class="nav-link <?php if($sh=='pause') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("List Mix"); ?></p></a>
+						</li>
+						<?php
+						}
+						?>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=37" class="nav-link <?php if($sh=='listmix') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Pause Codes"); ?></p></a>
+						</li>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=301" class="nav-link <?php if($sh=='preset') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Presets"); ?></p></a>
+						</li>
+						<?php
+						if ($SSoutbound_autodial_active > 0)
+						{
+						?>
+						<li class="nav-item d-none">
+							<a href="<?php echo $ADMIN ?>?ADD=302" class="nav-link <?php if($sh=='accid') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("AC-CID"); ?></p></a>
+						</li>
+						<?php
+						}
+						?>
+					</ul>
+				</li>
+				<?php
+				if ($SSoutbound_autodial_active > 0)
+				{
+				?>
+				<li class="nav-item <?php if($hh=='lists') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=100"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=100" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Lists"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=100" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Lists"); ?></p></a>
+						</li>
+						<?php if ($add_copy_disabled < 1) 
+						{ ?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=111" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New List"); ?></p></a>
+						</li>
+						<?php 
+						} ?>
+						<li class="nav-item">
+							<a href="admin_search_lead.php" class="nav-link <?php if($sh=='search') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Search For A Lead"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="admin_modify_lead.php" class="nav-link <?php if($sh=='lead') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New Lead"); ?></p></a>
+						</li>
+						<?php if ($LOGdelete_from_dnc > 0) {$DNClink = _QXZ("Add-Delete DNC Number");}
+						else {$DNClink = _QXZ("Add DNC Number");}?>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=121" class="nav-link <?php if($sh=='dnc') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo $DNClink ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="./admin_listloader_fourth_gen.php" class="nav-link <?php if($sh=='load') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Load New Leads"); ?></p></a>
+						</li>
+						<?php
+						if ($SScustom_fields_enabled > 0)
+						{
+							$admin_lists_custom = 'admin_lists_custom.php';
+						?>
+						<li class="nav-item">
+							<a href="./<?php echo $admin_lists_custom ?>" class="nav-link <?php if($sh=='custom') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("List Custom Fields"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="./<?php echo $admin_lists_custom ?>?action=COPY_FIELDS_FORM" class="nav-link <?php if($sh=='cpcust') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy Custom Fields"); ?></p></a>
+						</li>
+						<?php
+						}
+						if ($SSenable_drop_lists > 0)
+						{
+						?>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=130" class="nav-link <?php if($sh=='droplist') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Drop Lists"); ?></p></a>
+						</li>
+						<?php
+						}
+						?>
+					</ul>
+				</li>
+				<?php
+				}
+				if (($SSqc_features_active=='1') && ($qc_auth=='1')) 
+				{
+					if($qc_display_group_type=="CAMPAIGN") {$sh="campaign";}
+					if($qc_display_group_type=="INGROUP") {$sh="ingroup";}
+					if($qc_display_group_type=="LIST") {$sh="list";}
+					#if($sh=="modify") {$sh="modify";}
+					if($qc_display_group_type=="SCORECARD") {$sh="scorecard";}
+					if(!$sh) {$sh="campaign";}
+				?>
+				<li class="nav-item <?php if($hh=='qc') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=100000000000000&qc_display_group_type=CAMPAIGN"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=100000000000000&qc_display_group_type=CAMPAIGN" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Quality Control"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=100000000000000&qc_display_group_type=CAMPAIGN" class="nav-link <?php if($sh=='campaign') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("QC Calls by Campaign"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=100000000000000&qc_display_group_type=LIST" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("QC Calls by List"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=100000000000000&qc_display_group_type=INGROUP" class="nav-link <?php if($sh=='ingroup') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("QC Calls by Ingroup"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="qc_scorecards.php" class="nav-link <?php if($sh=='scorecard') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show QC Scorecards"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=341111111111111" class="nav-link <?php if($sh=='modify') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Modify QC Codes"); ?></p></a>
+						</li>
+					</ul>
+				</li>
+				<?php
+				}
+				?>
+				<li class="nav-item <?php if($hh=='scripts') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=1000000"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=1000000" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Scripts"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=1000000" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Scripts"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=1111111" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New Script"); ?></p></a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item <?php if($hh=='filters') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=10000000"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=10000000" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Filters"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=10000000" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Filters"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=11111111" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New Filter"); ?></p></a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item <?php if($hh=='ingroups') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=1001"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=1001" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Inbound"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=1000" class="nav-link <?php if($sh=='listIG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show In-Groups"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1) 
+						{ ?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1111" class="nav-link <?php if($sh=='newIG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New In-Group"); ?></p></a>
+						</li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1211" class="nav-link <?php if($sh=='copyIG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy In-Group"); ?></p></a>
+						</li>
+						<?php 
+						}
+						if ($SSemail_enabled>0)
+						{ ?>
+						<li class="nav-item nav-tabs"></li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1800" class="nav-link <?php if($sh=='listEG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Email Groups"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1)
+						{ 
+							?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1811" class="nav-link <?php if($sh=='newEG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add New Email Group"); ?></p></a>
+						</li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1911" class="nav-link <?php if($sh=='copyEG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy Email Group"); ?></p></a>
+						</li>
+						<?php 
+						}
+						}
+						if ($SSchat_enabled>0)
+						{ ?>
+						<li class="nav-item nav-tabs"></li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1900" class="nav-link <?php if($sh=='listCG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Chat Groups"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1)
+							{ 
+							?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=18111" class="nav-link <?php if($sh=='newCG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add New Chat Group"); ?></p></a>
+						</li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=19111" class="nav-link <?php if($sh=='copyCG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy Chat Group"); ?></p></a>
+						</li>
+						<?php 
+							}
+						} 
+						?>
+						<li class="nav-item nav-tabs"></li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1300" class="nav-link <?php if($sh=='listDID') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show DIDs"); ?></p></a>
+						</li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1311" class="nav-link <?php if($sh=='newDID') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New DID"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1)
+						{ 
+						?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1411" class="nav-link <?php if($sh=='copyDID') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy DID"); ?></p></a>
+						</li>
+						<?php
+						}
+						if ($SSdid_ra_extensions_enabled > 0)
+						{
+						?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1320" class="nav-link <?php if($sh=='didRA') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("RA Extensions"); ?></p></a>
+						</li><?php
+						}
+						?>
+						<li class="nav-item nav-tabs"></li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1500" class="nav-link <?php if($sh=='listCM') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Call Menus"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1)
+						{ 
+						?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1511" class="nav-link <?php if($sh=='newCM') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New Call Menu"); ?></p></a>
+						</li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1611" class="nav-link <?php if($sh=='copyCM') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy Call Menu"); ?></p></a>
+						</li>
+						<?php
+						}
+						?>
+						<li class="nav-item nav-tabs"></li>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1700" class="nav-link <?php if($sh=='listFPG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Filter Phone Groups"); ?></p></a>
+						</li>
+						<?php 
+						if ($add_copy_disabled < 1)
+						{ 
+						?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=1711" class="nav-link <?php if($sh=='addFPG') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add Filter Phone Group"); ?></p></a>
+						</li>
+						<?php
+						}
+						if ($LOGdelete_from_dnc > 0) {$FPGlink = _QXZ("Add-Delete FPG Number");}
+						else {$FPGlink = _QXZ("Add FPG Number");}
+						?>
+						<li class="nav-item ">
+							<a href="<?php echo $ADMIN ?>?ADD=171" class="nav-link <?php if($sh=='copyDID') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo $FPGlink ?></p></a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item <?php if($hh=='filters') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=100000"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+					<a href="<?php echo $ADMIN ?>?ADD=100000" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("User Groups"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=100000" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show User Groups"); ?></p></a>
+						</li>
+						<?php
+						if ($SSenable_drop_lists > 0)
+						{
+						?>
+						<li class="nav-item">
+							<a href="<?php echo $ADMIN ?>?ADD=111111" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New User Group"); ?></p></a>
+						</li>
+						<?php
+						}
+						?>
+						<li class="nav-item">
+							<a href="group_hourly_stats.php" class="nav-link <?php if($sh=='hour') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Group Hourly Report"); ?></p></a>
+						</li>
+						<li class="nav-item">
+							<a href="user_group_bulk_change.php" class="nav-link <?php if($sh=='bulk') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Bulk Group Change"); ?></p></a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<!-- /.sidebar-menu -->
+	</div>
+<!-- /.sidebar -->
+</aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header p-2">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+
 <CENTER>
 
 <TABLE BGCOLOR=white cellpadding=0 cellspacing=0>
@@ -1939,79 +2372,7 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 			<?php
 			}
 		 } 
-	?>
-	<!-- LISTS NAVIGATION -->
-	<?php
-	if ($SSoutbound_autodial_active > 0)
-		{
-		?>
-		<TR WIDTH=160><TD><DIV CLASS="horiz_line"></DIV></TD></TR>
-		<TR BGCOLOR=#<?php echo "$SSmenu_background "; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$ADMIN?ADD=100';\"";} ?>><TD ALIGN=LEFT <?php echo $lists_hh ?>><a href="<?php echo $ADMIN ?>?ADD=100" STYLE="text-decoration:none;"><?php echo $lists_icon ?> <FONT STYLE="font-family:HELVETICA;font-size:<?php echo $header_font_size ?>;color:<?php echo $lists_fc ?>"><?php echo $lists_bold ?><?php echo _QXZ("Lists"); ?></a></TD></TR>
-		<?php
-		if (strlen($lists_hh) > 25) 
-			{ 
-			$list_sh="CLASS=\"subhead_style\"";
-			$new_sh="CLASS=\"subhead_style\"";
-			$search_sh="CLASS=\"subhead_style\"";
-			$lead_sh="CLASS=\"subhead_style\"";
-			$load_sh="CLASS=\"subhead_style\"";
-			$dnc_sh="CLASS=\"subhead_style\"";
-			$custom_sh="CLASS=\"subhead_style\"";
-			$cpcust_sh="CLASS=\"subhead_style\"";
-			$droplist_sh="CLASS=\"subhead_style\"";
-
-			if ($LOGdelete_from_dnc > 0) {$DNClink = _QXZ("Add-Delete DNC Number");}
-			else {$DNClink = _QXZ("Add DNC Number");}
-
-			if ($sh=='list') {$list_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='new') {$new_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='search') {$search_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='lead') {$lead_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='load') {$load_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='dnc') {$dnc_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='custom') {$custom_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='cpcust') {$cpcust_sh="CLASS=\"subhead_style_selected\"";}
-			if ($sh=='droplist') {$droplist_sh="CLASS=\"subhead_style_selected\"";}
-
-			?>
-			<TR <?php echo $list_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$ADMIN?ADD=100';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<a href="<?php echo $ADMIN ?>?ADD=100" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Show Lists"); ?> </a>
-			</TR><TR <?php echo $new_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$ADMIN?ADD=111';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<?php if ($add_copy_disabled < 1) { ?>
-			<a href="<?php echo $ADMIN ?>?ADD=111" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Add A New List"); ?> </a>
-			</TR><TR <?php echo $search_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='admin_search_lead.php';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<?php } ?>
-			<a href="admin_search_lead.php" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Search For A Lead"); ?> </a>
-			</TR><TR <?php echo $lead_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='admin_modify_lead.php';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<a href="admin_modify_lead.php" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Add A New Lead"); ?> </a>
-			</TR><TR <?php echo $dnc_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$ADMIN?ADD=121';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<a href="<?php echo $ADMIN ?>?ADD=121" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo $DNClink ?> </a>
-			</TR><TR <?php echo $load_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='admin_listloader_fourth_gen.php';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-			<a href="./admin_listloader_fourth_gen.php" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Load New Leads"); ?> </a>
-			<?php
-			if ($SScustom_fields_enabled > 0)
-				{
-				$admin_lists_custom = 'admin_lists_custom.php';
-				?>
-				</TR><TR <?php echo $custom_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$admin_lists_custom';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-				<a href="./<?php echo $admin_lists_custom ?>" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("List Custom Fields"); ?> </a>
-				</TR><TR <?php echo $cpcust_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$admin_lists_custom?action=COPY_FIELDS_FORM';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-				<a href="./<?php echo $admin_lists_custom ?>?action=COPY_FIELDS_FORM" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Copy Custom Fields"); ?> </a>
-				<?php
-				}
-			if ($SSenable_drop_lists > 0)
-				{
-				?>
-				<TR <?php echo $droplist_sh ?><?php if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$ADMIN?ADD=100';\"";} ?>><TD ALIGN=LEFT> &nbsp; 
-				<a href="<?php echo $ADMIN ?>?ADD=130" STYLE="text-decoration:none;"><FONT STYLE="font-family:HELVETICA;font-size:<?php echo $subcamp_font_size ?>;color:BLACK;"> <?php echo _QXZ("Drop Lists"); ?> </a>
-				<?php
-				}
-			?>
-			</TD></TR>
-			<?php
-			}
-		}
-
+	
 	if (($SSqc_features_active=='1') && ($qc_auth=='1')) 
 		{ ?>
 	<!-- QC navigation -->
