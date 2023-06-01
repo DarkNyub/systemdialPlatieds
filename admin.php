@@ -8233,6 +8233,32 @@ if ($ADD=="1A")
 			$voi_count = "$row[0]";
 			}
 		##### END ID override optional section #####
+		echo '<section class="content">';
+			echo '<div class="container-fluid">';
+				echo '<div class="row">';
+					echo '<div class="col-12 text-center">';
+						echo '<h2>Resumen del sistema</h2>';
+					echo '</div>';
+				echo '</div>';
+				echo '<div class="row">';
+					echo '<div class="col-12">';
+						echo '<form>
+						
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<button type="button" class="btn btn-danger">Action</button>
+									</div>
+									<input type="text" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+								</div>
+							</form>';
+					echo '</div>';
+				echo '</div>';
+			echo '</div>';
+		echo '</section>';
 
 		echo "<TABLE><TR><TD>\n";
 		echo "<img src=\"images/icon_black_users.png\" alt=\"Users\" width=42 height=42> <FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
