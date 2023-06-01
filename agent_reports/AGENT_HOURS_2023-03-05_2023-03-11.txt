@@ -1,0 +1,33 @@
+
+Sunday    2023-03-05
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Monday    2023-03-06
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente1             agente1       1  0:00:00  0:31:51  0:00:00  0:00:00  0:31:51  0:00:00  2023-03-06 20:37:07  2023-03-06 20:37:07
+agente2             agente2       8  0:01:27  0:40:08  0:01:04  0:00:00  0:42:39  0:24:58  2023-03-06 20:08:46  2023-03-06 20:33:44
+
+Tuesday   2023-03-07
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente2             agente2       6  0:00:09  0:54:40  0:00:25  0:01:51  0:57:05  0:28:51  2023-03-07 20:07:32  2023-03-07 20:36:23
+
+Wednesday 2023-03-08
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Thursday  2023-03-09
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Friday    2023-03-10
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente2             agente2       1  0:00:00  0:00:00  0:00:00  0:00:00  0:00:00  0:00:00  2023-03-10 20:15:01  2023-03-10 20:15:01
+Miguel Angel Urrego murrego      18  0:00:00  0:09:53  0:03:24  0:52:25  1:05:42  1:24:28  2023-03-10 21:35:28  2023-03-10 22:59:56
+
+Saturday  2023-03-11
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    

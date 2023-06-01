@@ -1,0 +1,4 @@
+TODAY:     Tuesday       2023-02-28
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente2             agente2       2  0:00:00  2:04:48  0:00:10  0:00:00  2:04:58  0:01:35  2023-02-28 00:41:54  2023-02-28 00:43:29

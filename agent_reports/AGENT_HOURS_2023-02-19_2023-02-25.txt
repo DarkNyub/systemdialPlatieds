@@ -1,0 +1,35 @@
+
+Sunday    2023-02-19
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Monday    2023-02-20
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente1             agente1       6  0:00:00  0:10:47  0:00:00  0:00:00  0:10:47  5:31:04  2023-02-20 16:02:40  2023-02-20 21:33:44
+agente2             agente2       8  0:00:49  0:01:14  0:00:31  0:00:04  0:02:38  0:02:36  2023-02-20 21:35:00  2023-02-20 21:37:36
+
+Tuesday   2023-02-21
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente1             agente1       3  0:00:00  0:18:36  0:00:00  0:00:00  0:18:36  0:21:06  2023-02-21 15:06:03  2023-02-21 15:27:09
+agente2             agente2      72  1:07:06  0:07:56  0:44:25  0:01:12  2:00:39  6:15:51  2023-02-21 15:25:12  2023-02-21 21:41:03
+
+Wednesday 2023-02-22
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente2             agente2       1  0:00:00  0:00:00  0:00:00  0:00:00  0:00:00  0:00:00  2023-02-22 14:53:02  2023-02-22 14:53:02
+
+Thursday  2023-02-23
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente1             agente1       1  0:00:00  0:37:07  0:00:00  0:00:00  0:37:07  0:00:00  2023-02-23 17:14:56  2023-02-23 17:14:56
+agente2             agente2      19  0:02:39  0:05:17  0:12:05  0:00:36  0:20:37  1:04:16  2023-02-23 21:33:11  2023-02-23 22:37:27
+
+Friday    2023-02-24
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Saturday  2023-02-25
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    

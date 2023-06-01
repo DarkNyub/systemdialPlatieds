@@ -1,0 +1,34 @@
+
+Sunday    2023-01-08
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+
+Monday    2023-01-09
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+prueba              agente1       3  0:00:00  0:02:55  0:00:00  0:00:00  0:02:55  0:02:22  2023-01-09 17:44:41  2023-01-09 17:47:03
+
+Tuesday   2023-01-10
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+prueba              agente1       9  0:00:00  0:05:18  0:00:00  0:00:00  0:05:18  0:16:21  2023-01-10 20:21:06  2023-01-10 20:37:27
+
+Wednesday 2023-01-11
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+prueba              agente1      22  0:02:16  7:21:46  0:02:36  0:00:23  7:27:01  6:44:42  2023-01-11 11:10:25  2023-01-11 17:55:07
+
+Thursday  2023-01-12
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+agente2             agente2       1  0:00:00  0:21:32  0:00:00  0:00:00  0:21:32  0:00:00  2023-01-12 17:07:26  2023-01-12 17:07:26
+prueba              agente1      15  0:00:00  0:40:37  0:05:56  0:00:00  0:46:33  1:11:42  2023-01-12 16:38:39  2023-01-12 17:50:21
+
+Friday    2023-01-13
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
+Cristian Camilo Amaycamaya        6  0:00:00  3:13:18  0:34:28  0:00:00  3:47:46  0:51:21  2023-01-13 07:54:15  2023-01-13 08:45:36
+
+Saturday  2023-01-14
+
+AGENT                USER     CALLS  TALK     PAUSE    WAIT     DISPO    ACTIVE   LOGTIME  FIRST                LAST                    
