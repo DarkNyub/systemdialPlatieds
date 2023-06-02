@@ -1835,7 +1835,7 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
 	<a href="index3.html" class="brand-link">
-		<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="brand-image ">
 		<span class="brand-text font-weight-light">&nbsp;</span>
 	</a>
 

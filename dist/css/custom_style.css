@@ -1,0 +1,6 @@
+.cursor_pointer{
+    cursor: pointer !important;
+}
+.cursor_default{
+    cursor: default !important;
+}

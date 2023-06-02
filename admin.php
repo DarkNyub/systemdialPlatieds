@@ -6516,6 +6516,7 @@ echo "<link rel=\"stylesheet\" href=\"plugins/fontawesome-free/css/all.min.css\"
 echo "<link rel=\"stylesheet\" href=\"https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css\">\n";
   /* Theme style*/
 echo "<link rel=\"stylesheet\" href=\"dist/css/adminlte.min.css\">\n";
+echo "<link rel=\"stylesheet\" href=\"dist/css/custom_style.css\">\n";
 
 /* jQuery */
 echo "<script language=\"JavaScript\" src=\"plugins/jquery/jquery.min.js\"></script>\n";
@@ -8236,32 +8237,99 @@ if ($ADD=="1A")
 		echo '<section class="content">';
 			echo '<div class="container-fluid">';
 				echo '<div class="row">';
-					echo '<div class="col-12 text-center">';
-						echo '<h2>Resumen del sistema</h2>';
+					echo '<div class="col-12">';
+						echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("COPY USER").':</label>';
+							if (preg_match('/display_all/',$status))
+							{
+								$SQLstatus = '';
+								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
+							}
+							else
+							{
+								$SQLstatus = "and active='Y'";
+								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
+							}
+						echo '</p>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="row">';
 					echo '<div class="col-12">';
-						echo '<form>
-						
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<button type="button" class="btn btn-danger">Action</button>
-									</div>
-									<input type="text" class="form-control">
-								</div>
-								<div class="form-group">
-									<label for="exampleInputEmail1">Email address</label>
-									<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-								</div>
-							</form>';
+						echo "<form action=$PHP_SELF method=POST name=userform id=userform>\n";
+							echo "<input type=hidden name=ADD value=2A>\n";
+							echo "<input type=hidden name=user_toggle id=user_toggle value=0>\n";
+							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("New User Number").'</label>';
+							echo '<div class="input-group mb-1">';
+							if ($voi_count > 0)
+								{
+									echo '<div class="input-group-append">';
+										echo '<button class="btn btn-primary btn-sm" type="button">'._QXZ("Auto-Generated").'</button>';
+									echo '</div>';
+									echo '<input type=hidden name=user id=user value="99999">';
+								}
+							else
+								{
+									echo '<input type="text" name=user id=user class="form-control">';
+									echo '<div class="input-group-append">';
+										echo '<button class="btn btn-primary btn-sm" type="button"  onClick="user_auto()">'._QXZ("Auto-Generated").'</button>';
+									echo '</div>';
+								}
+								echo '<div class="input-group-append">';
+									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo '</div>';
+							echo '</div>';
+							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
+							echo '<small for="exampleInputEmail1" class="mb-0 ml-5">'._QXZ("Strength").' </small>';
+							echo "<img id=reg_pass_img src='images/pixel.gif' onLoad=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> ";
+							echo '<small>'._QXZ("Length").': </small><small class="mb-0" id=pass_length name=pass_length>0</small>';
+							echo '<div class="input-group mb-1">';
+								echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
+								echo '<div class="input-group-append">';
+									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo '</div>';
+							echo '</div>';
+							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
+							echo '<div class="input-group mb-1">';
+								echo '<input type="text" class="form-control">';
+								echo '<div class="input-group-append">';
+									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo '</div>';
+							echo '</div>';
+
+							if ($LOGuser_level==9) {$levelMAX=10;}
+							else {$levelMAX=$LOGuser_level;}
+							$stmt="SELECT user,full_name from vicidial_users where user_level < $levelMAX $LOGadmin_viewable_groupsSQL order by full_name;";
+							$rslt=mysql_to_mysqli($stmt, $link);
+							$Uusers_to_print = mysqli_num_rows($rslt);
+							$Uusers_list='';
+					
+							$o=0;
+							while ($Uusers_to_print > $o) 
+								{
+								$rowx=mysqli_fetch_row($rslt);
+								$Uusers_list .= "<option value=\"$rowx[0]\">$rowx[0] - $rowx[1]</option>\n";
+								$o++;
+								}
+							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Source User").'</label>';
+							echo '<div class="input-group mb-1">';
+								echo '<select class="form-control">';
+									echo "$Uusers_list";
+								echo '</select>';
+								echo '<div class="input-group-append">';
+									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo '</div>';
+							echo '</div>';
+							
+							echo '<div class="text-center">';
+								echo '<button type="submit" class="btn btn-default">'._QXZ("SUBMIT").'</button>';
+							echo '</div>';
+						echo '</form>';
 					echo '</div>';
 				echo '</div>';
 			echo '</div>';
 		echo '</section>';
-
+		/*
 		echo "<TABLE><TR><TD>\n";
-		echo "<img src=\"images/icon_black_users.png\" alt=\"Users\" width=42 height=42> <FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
+		echo "<img src=\"images/icon_black_users.png\" alt=\"Users\" widt=h42 height=42> <FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
 
 		echo "<br>"._QXZ("COPY USER")."<form action=$PHP_SELF method=POST name=userform id=userform>\n";
 		echo "<input type=hidden name=ADD value=2A>\n";
@@ -8275,9 +8343,7 @@ if ($ADD=="1A")
 			{
 			echo "<tr bgcolor=#$SSstd_row4_background><td align=right>"._QXZ("New User Number").": </td><td align=left><input type=text name=user id=user size=20 maxlength=20> <input style='background-color:#$SSbutton_color' type=button name=auto_user value=\""._QXZ("AUTO-GENERATE")."\" onClick=\"user_auto()\"> $NWB#users-user$NWE</td></tr>\n";
 			}
-
-		echo "<tr bgcolor=#$SSstd_row4_background><td align=right>"._QXZ("Password").": </td><td align=left style=\"display:table-cell; vertical-align:middle;\" NOWRAP><input type=text id=reg_pass name=pass size=50 maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">$NWB#users-pass$NWE &nbsp; &nbsp; <font size=1>"._QXZ("Strength").":</font> <IMG id=reg_pass_img src='images/pixel.gif' style=\"vertical-align:middle;\" onLoad=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> &nbsp; <font size=1> "._QXZ("Length").": <span id=pass_length name=pass_length>0</span></font></td></tr>\n";
-
+		echo ""._QXZ("Password").": <input type=text id=reg_pass name=pass size=50 maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> "._QXZ("Strength").": <IMG id=reg_pass_img src='images/pixel.gif' onLoad=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> "._QXZ("Length").": <span id=pass_length name=pass_length>0</span>\n";
 		echo "<tr bgcolor=#$SSstd_row4_background><td align=right>"._QXZ("Full Name").": </td><td align=left><input type=text name=full_name size=20 maxlength=100>$NWB#users-full_name$NWE</td></tr>\n";
 
 		if ($LOGuser_level==9) {$levelMAX=10;}
@@ -8301,6 +8367,7 @@ if ($ADD=="1A")
 		echo "</select>$NWB#users-user$NWE</td></tr>\n";
 		echo "<tr bgcolor=#$SSstd_row4_background><td align=center colspan=2><input style='background-color:#$SSbutton_color' type=button name=SUBMIT value='"._QXZ("SUBMIT")."' onClick=\"user_submit()\"></td></tr>\n";
 		echo "</TABLE></center>\n";
+		//*/
 		}
 	else
 		{
