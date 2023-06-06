@@ -6508,26 +6508,25 @@ echo "<script language=\"JavaScript\" src=\"calendar_db.js\"></script>\n";
 echo "<script language=\"JavaScript\" src=\"help.js\"></script>\n";
 
 /* scripts plantillado nuevo */
-  /* Google Font: Source Sans Pro*/
-echo "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback\">\n";
-  /* Font Awesome*/
-echo "<link rel=\"stylesheet\" href=\"plugins/fontawesome-free/css/all.min.css\">\n";
-  /* Ionicons*/
-echo "<link rel=\"stylesheet\" href=\"https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css\">\n";
-  /* Theme style*/
-echo "<link rel=\"stylesheet\" href=\"dist/css/adminlte.min.css\">\n";
-echo "<link rel=\"stylesheet\" href=\"dist/css/custom_style.css\">\n";
-
-/* jQuery */
-echo "<script language=\"JavaScript\" src=\"plugins/jquery/jquery.min.js\"></script>\n";
-/* jQuery UI 1.11.4 */
-echo "<script language=\"JavaScript\" src=\"plugins/jquery-ui/jquery-ui.min.js\"></script>\n";
-/* Resolve conflict in jQuery UI tooltip with Bootstrap tooltip */
-/* Bootstrap 4 */
-echo "<script language=\"JavaScript\" src=\"plugins/bootstrap/js/bootstrap.bundle.min.js\"></script>\n";
-/* AdminLTE App */
-echo "<script language=\"JavaScript\" src=\"dist/js/adminlte.js\"></script>\n";
-
+?>
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	<link rel="stylesheet" href="dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="dist/css/custom_style.css">
+	
+	
+	<script language="JavaScript" src="plugins/jquery/jquery.min.js"></script>
+	<script language="JavaScript" src="plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script>$.widget.bridge('uibutton', $.ui.button)</script>
+	<script language="JavaScript" src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script language="JavaScript" src="plugins/moment/moment.min.js"></script>
+	<script language="JavaScript" src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script language="JavaScript" src="dist/js/adminlte.js"></script>
+	
+	<?php
 /* fin scripts plantillado nuevo */
 
 echo "<div id='HelpDisplayDiv' class='help_info' style='display:none;'></div>";
@@ -8234,99 +8233,97 @@ if ($ADD=="1A")
 			$voi_count = "$row[0]";
 			}
 		##### END ID override optional section #####
-		echo '<section class="content">';
-			echo '<div class="container-fluid">';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("COPY USER").':</label>';
-							if (preg_match('/display_all/',$status))
-							{
-								$SQLstatus = '';
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
-							}
-							else
-							{
-								$SQLstatus = "and active='Y'";
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
-							}
-						echo '</p>';
-					echo '</div>';
-				echo '</div>';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo "<form action=$PHP_SELF method=POST name=userform id=userform>\n";
-							echo "<input type=hidden name=ADD value=2A>\n";
-							echo "<input type=hidden name=user_toggle id=user_toggle value=0>\n";
-							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("New User Number").'</label>';
-							echo '<div class="input-group mb-1">';
-							if ($voi_count > 0)
-								{
-									echo '<div class="input-group-append">';
-										echo '<button class="btn btn-primary btn-sm" type="button">'._QXZ("Auto-Generated").'</button>';
-									echo '</div>';
-									echo '<input type=hidden name=user id=user value="99999">';
-								}
-							else
-								{
-									echo '<input type="text" name=user id=user class="form-control">';
-									echo '<div class="input-group-append">';
-										echo '<button class="btn btn-primary btn-sm" type="button"  onClick="user_auto()">'._QXZ("Auto-Generated").'</button>';
-									echo '</div>';
-								}
-								echo '<div class="input-group-append">';
-									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
-								echo '</div>';
-							echo '</div>';
-							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
-							echo '<small for="exampleInputEmail1" class="mb-0 ml-5">'._QXZ("Strength").' </small>';
-							echo "<img id=reg_pass_img src='images/pixel.gif' onLoad=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> ";
-							echo '<small>'._QXZ("Length").': </small><small class="mb-0" id=pass_length name=pass_length>0</small>';
-							echo '<div class="input-group mb-1">';
-								echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
-								echo '<div class="input-group-append">';
-									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
-								echo '</div>';
-							echo '</div>';
-							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
-							echo '<div class="input-group mb-1">';
-								echo '<input type="text" class="form-control">';
-								echo '<div class="input-group-append">';
-									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
-								echo '</div>';
-							echo '</div>';
-
-							if ($LOGuser_level==9) {$levelMAX=10;}
-							else {$levelMAX=$LOGuser_level;}
-							$stmt="SELECT user,full_name from vicidial_users where user_level < $levelMAX $LOGadmin_viewable_groupsSQL order by full_name;";
-							$rslt=mysql_to_mysqli($stmt, $link);
-							$Uusers_to_print = mysqli_num_rows($rslt);
-							$Uusers_list='';
-					
-							$o=0;
-							while ($Uusers_to_print > $o) 
-								{
-								$rowx=mysqli_fetch_row($rslt);
-								$Uusers_list .= "<option value=\"$rowx[0]\">$rowx[0] - $rowx[1]</option>\n";
-								$o++;
-								}
-							echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Source User").'</label>';
-							echo '<div class="input-group mb-1">';
-								echo '<select class="form-control">';
-									echo "$Uusers_list";
-								echo '</select>';
-								echo '<div class="input-group-append">';
-									echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
-								echo '</div>';
-							echo '</div>';
-							
-							echo '<div class="text-center">';
-								echo '<button type="submit" class="btn btn-default">'._QXZ("SUBMIT").'</button>';
-							echo '</div>';
-						echo '</form>';
-					echo '</div>';
+		echo '<div class="container-fluid">';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("COPY USER").':</label>';
+						if (preg_match('/display_all/',$status))
+						{
+							$SQLstatus = '';
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
+						}
+						else
+						{
+							$SQLstatus = "and active='Y'";
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
+						}
+					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-		echo '</section>';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo "<form action=$PHP_SELF method=POST name=userform id=userform>\n";
+						echo "<input type=hidden name=ADD value=2A>\n";
+						echo "<input type=hidden name=user_toggle id=user_toggle value=0>\n";
+						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("New User Number").'</label>';
+						echo '<div class="input-group mb-1">';
+						if ($voi_count > 0)
+							{
+								echo '<div class="input-group-append">';
+									echo '<button class="btn btn-primary btn-sm" type="button">'._QXZ("Auto-Generated").'</button>';
+								echo '</div>';
+								echo '<input type=hidden name=user id=user value="99999">';
+							}
+						else
+							{
+								echo '<input type="text" name=user id=user class="form-control">';
+								echo '<div class="input-group-append">';
+									echo '<button class="btn btn-primary btn-sm" type="button"  onClick="user_auto()">'._QXZ("Auto-Generated").'</button>';
+								echo '</div>';
+							}
+							echo '<div class="input-group-append">';
+								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo '</div>';
+						echo '</div>';
+						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
+						echo '<small for="exampleInputEmail1" class="mb-0 ml-5">'._QXZ("Strength").' </small>';
+						echo "<img id=reg_pass_img src='images/pixel.gif' onLoad=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\"> ";
+						echo '<small>'._QXZ("Length").': </small><small class="mb-0" id=pass_length name=pass_length>0</small>';
+						echo '<div class="input-group mb-1">';
+							echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
+							echo '<div class="input-group-append">';
+								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo '</div>';
+						echo '</div>';
+						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
+						echo '<div class="input-group mb-1">';
+							echo '<input type="text" class="form-control">';
+							echo '<div class="input-group-append">';
+								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo '</div>';
+						echo '</div>';
+
+						if ($LOGuser_level==9) {$levelMAX=10;}
+						else {$levelMAX=$LOGuser_level;}
+						$stmt="SELECT user,full_name from vicidial_users where user_level < $levelMAX $LOGadmin_viewable_groupsSQL order by full_name;";
+						$rslt=mysql_to_mysqli($stmt, $link);
+						$Uusers_to_print = mysqli_num_rows($rslt);
+						$Uusers_list='';
+				
+						$o=0;
+						while ($Uusers_to_print > $o) 
+							{
+							$rowx=mysqli_fetch_row($rslt);
+							$Uusers_list .= "<option value=\"$rowx[0]\">$rowx[0] - $rowx[1]</option>\n";
+							$o++;
+							}
+						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Source User").'</label>';
+						echo '<div class="input-group mb-1">';
+							echo '<select class="form-control">';
+								echo "$Uusers_list";
+							echo '</select>';
+							echo '<div class="input-group-append">';
+								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo '</div>';
+						echo '</div>';
+						
+						echo '<div class="text-center">';
+							echo '<button type="submit" class="btn btn-default">'._QXZ("SUBMIT").'</button>';
+						echo '</div>';
+					echo '</form>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
 		/*
 		echo "<TABLE><TR><TD>\n";
 		echo "<img src=\"images/icon_black_users.png\" alt=\"Users\" widt=h42 height=42> <FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
@@ -43628,64 +43625,62 @@ if ($ADD=="0A")
 		$rslt=mysql_to_mysqli($stmt, $link);
 		$people_to_print = mysqli_num_rows($rslt);
 
-		echo '<section class="content">';
-			echo '<div class="container-fluid">';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("USER LISTINGS").':</label>';
-							if (preg_match('/display_all/',$status))
-							{
-								$SQLstatus = '';
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
-							}
-							else
-							{
-								$SQLstatus = "and active='Y'";
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
-							}
-						echo '</p>';
-					echo '</div>';
-				echo '</div>';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
-							echo '<thead>';
-								echo '<tr class="bg-dark">';
-									echo '<th class="">'._QXZ("USER ID").' - # - </th>';
-									echo '<th class="">'._QXZ("FULL NAME").' </th>';
-									echo '<th class="">'._QXZ("LEVEL").' </th>';
-									echo '<th class="">'._QXZ("GROUP").' </th>';
-									echo '<th class="">'._QXZ("ACTIVE").' </th>';
-									echo '<th class="">'._QXZ("MODIFY").' </th>';
-									echo '<th class="">'._QXZ("STATS").' </th>';
-									echo '<th class="">'._QXZ("STATUS").' </th>';
-									echo '<th class="">'._QXZ("TIME").' </th>';
-								echo '</tr>';
-							echo '</thead>';
-							echo '<tbody>';
-								$o=0;
-								while ($people_to_print > $o) 
-								{
-									$row=mysqli_fetch_row($rslt);
-									echo '<tr>';
-										echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">$row[0]</a></td>";
-										echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
-										echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
-										echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
-										echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
-										echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
-										echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
-										echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
-										echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./AST_agent_time_sheet.php?agent=$row[0]'\"";} echo "><a href=\"./AST_agent_time_sheet.php?agent=$row[0]\">"._QXZ("TIME")."</a></td>\n";
-									echo '</tr>';
-									$o++;
-								}
-							echo '</tbody>';
-						echo '</table>';
-					echo '</div>';
+		echo '<div class="container-fluid">';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("USER LISTINGS").':</label>';
+						if (preg_match('/display_all/',$status))
+						{
+							$SQLstatus = '';
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
+						}
+						else
+						{
+							$SQLstatus = "and active='Y'";
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
+						}
+					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-		echo '</section>';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
+						echo '<thead>';
+							echo '<tr class="bg-dark">';
+								echo '<th class="">'._QXZ("USER ID").' - # - </th>';
+								echo '<th class="">'._QXZ("FULL NAME").' </th>';
+								echo '<th class="">'._QXZ("LEVEL").' </th>';
+								echo '<th class="">'._QXZ("GROUP").' </th>';
+								echo '<th class="">'._QXZ("ACTIVE").' </th>';
+								echo '<th class="">'._QXZ("MODIFY").' </th>';
+								echo '<th class="">'._QXZ("STATS").' </th>';
+								echo '<th class="">'._QXZ("STATUS").' </th>';
+								echo '<th class="">'._QXZ("TIME").' </th>';
+							echo '</tr>';
+						echo '</thead>';
+						echo '<tbody>';
+							$o=0;
+							while ($people_to_print > $o) 
+							{
+								$row=mysqli_fetch_row($rslt);
+								echo '<tr>';
+									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">$row[0]</a></td>";
+									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
+									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
+									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
+									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./AST_agent_time_sheet.php?agent=$row[0]'\"";} echo "><a href=\"./AST_agent_time_sheet.php?agent=$row[0]\">"._QXZ("TIME")."</a></td>\n";
+								echo '</tr>';
+								$o++;
+							}
+						echo '</tbody>';
+					echo '</table>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
 		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
 /*
 	echo "<TABLE><TR><TD>\n";
@@ -43779,76 +43774,74 @@ if ($ADD==10)
 		$rslt=mysql_to_mysqli($stmt, $link);
 		$campaigns_to_print = mysqli_num_rows($rslt);
 
-		echo '<section class="content">';
-			echo '<div class="container-fluid">';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-list-alt"></i> '._QXZ("CAMPAIGN LISTINGS").':</label>';
-							if ( (preg_match('/display_active/',$status)) or ( (!preg_match('/display_all/',$status)) and ($active_only_default_campaigns > 0) ) )
-							{
-								$SQLstatus = 'Y';
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=10&status=display_all\" class=\"text-body\">"._QXZ("show all campaigns")."</a>\n";
-							}
-							else
-							{
-								$SQLstatus = '';
-								echo " &nbsp; <a href=\"$PHP_SELF?ADD=10&status=display_active\" class=\"text-body\">"._QXZ("show only active campaigns")."</a>\n";
-							}
-						echo '</p>';
-					echo '</div>';
-				echo '</div>';
-				echo '<div class="row">';
-					echo '<div class="col-12">';
-						echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
-							echo '<thead>';
-								echo '<tr class="bg-dark">';
-									echo '<th class="">'._QXZ("CAMPAIGN ID").' </th>';
-									echo '<th class="">'._QXZ("NAME").' </th>';
-									echo '<th class="">'._QXZ("ACTIVE").' </th>';
-									echo '<th class="">'._QXZ("GROUP").' </th>';
-									if ($SSoutbound_autodial_active > 0)
-									{
-										echo '<th class="">'._QXZ("DIAL METHOD").' </th>';
-										echo '<th class="">'._QXZ("LEVEL").' </th>';
-										echo '<th class="">'._QXZ("LEAD ORDER").' </th>';
-										echo '<th class="">'._QXZ("DIAL STATUSES").' </th>';
-									}
-									echo '<th class="">'._QXZ("MODIFY").' </th>';
-								echo '</tr>';
-							echo '</thead>';
-							echo '<tbody>';
-								$o=0; $p=0;
-								while ($campaigns_to_print > $o) 
-									{
-									$row=mysqli_fetch_row($rslt);
-									if ( ($SQLstatus!='') and ($row[2]=='N') )
-										{$skip_display=1;}
-									else
-										{
-										echo '<tr>';
-											echo "<td><a href=\"$PHP_SELF?ADD=34&campaign_id=$row[0]\">$row[0]</a> &nbsp; </td>";
-											echo "<td>$row[1] &nbsp; </td>";
-											echo "<td>"._QXZ("$row[2]")." &nbsp; </td>";
-											echo "<td>".(preg_match('/\-\-ALL\-\-/', $row[7]) ? _QXZ("$row[7]") : $row[7])." &nbsp; </td>";
-											if ($SSoutbound_autodial_active > 0)
-												{
-												echo "<td>"._QXZ("$row[3]")." &nbsp; </td>";
-												echo "<td>$row[4] &nbsp; </td>";
-												echo "<td>"._QXZ("$row[5]")." &nbsp; </td>";
-												echo "<td>$row[6]</td>";
-												}
-											echo "<td><a href=\"$PHP_SELF?ADD=31&campaign_id=$row[0]\">"._QXZ("MODIFY")."</a></td>\n";
-										echo '</tr>';
-										$p++;
-										}
-									$o++;
-									}
-							echo '</tbody>';
-						echo '</table>';
-					echo '</div>';
+		echo '<div class="container-fluid">';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-list-alt"></i> '._QXZ("CAMPAIGN LISTINGS").':</label>';
+						if ( (preg_match('/display_active/',$status)) or ( (!preg_match('/display_all/',$status)) and ($active_only_default_campaigns > 0) ) )
+						{
+							$SQLstatus = 'Y';
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=10&status=display_all\" class=\"text-body\">"._QXZ("show all campaigns")."</a>\n";
+						}
+						else
+						{
+							$SQLstatus = '';
+							echo " &nbsp; <a href=\"$PHP_SELF?ADD=10&status=display_active\" class=\"text-body\">"._QXZ("show only active campaigns")."</a>\n";
+						}
+					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-		echo '</section>';
+			echo '<div class="row">';
+				echo '<div class="col-12">';
+					echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
+						echo '<thead>';
+							echo '<tr class="bg-dark">';
+								echo '<th class="">'._QXZ("CAMPAIGN ID").' </th>';
+								echo '<th class="">'._QXZ("NAME").' </th>';
+								echo '<th class="">'._QXZ("ACTIVE").' </th>';
+								echo '<th class="">'._QXZ("GROUP").' </th>';
+								if ($SSoutbound_autodial_active > 0)
+								{
+									echo '<th class="">'._QXZ("DIAL METHOD").' </th>';
+									echo '<th class="">'._QXZ("LEVEL").' </th>';
+									echo '<th class="">'._QXZ("LEAD ORDER").' </th>';
+									echo '<th class="">'._QXZ("DIAL STATUSES").' </th>';
+								}
+								echo '<th class="">'._QXZ("MODIFY").' </th>';
+							echo '</tr>';
+						echo '</thead>';
+						echo '<tbody>';
+							$o=0; $p=0;
+							while ($campaigns_to_print > $o) 
+								{
+								$row=mysqli_fetch_row($rslt);
+								if ( ($SQLstatus!='') and ($row[2]=='N') )
+									{$skip_display=1;}
+								else
+									{
+									echo '<tr>';
+										echo "<td><a href=\"$PHP_SELF?ADD=34&campaign_id=$row[0]\">$row[0]</a> &nbsp; </td>";
+										echo "<td>$row[1] &nbsp; </td>";
+										echo "<td>"._QXZ("$row[2]")." &nbsp; </td>";
+										echo "<td>".(preg_match('/\-\-ALL\-\-/', $row[7]) ? _QXZ("$row[7]") : $row[7])." &nbsp; </td>";
+										if ($SSoutbound_autodial_active > 0)
+											{
+											echo "<td>"._QXZ("$row[3]")." &nbsp; </td>";
+											echo "<td>$row[4] &nbsp; </td>";
+											echo "<td>"._QXZ("$row[5]")." &nbsp; </td>";
+											echo "<td>$row[6]</td>";
+											}
+										echo "<td><a href=\"$PHP_SELF?ADD=31&campaign_id=$row[0]\">"._QXZ("MODIFY")."</a></td>\n";
+									echo '</tr>';
+									$p++;
+									}
+								$o++;
+								}
+						echo '</tbody>';
+					echo '</table>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
 		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
 
 /*
@@ -49265,232 +49258,233 @@ if ($ADD==999990)
 
 		$section_width=700;
 		/*** empezar plantillado */
-		echo '<section class="content">';
-			echo '<div class="container-fluid">';
-				echo '<div class="row">';
-					echo '<div class="col-12 text-center">';
-						echo '<h2>Resumen del sistema</h2>';
+		
+		echo '<div class="container-fluid">';
+			echo '<div class="row">';
+				echo '<div class="col-12 text-center">';
+					echo '<h2>Resumen del sistema</h2>';
+				echo '</div>';
+			echo '</div>';
+			echo '<div class="row">';
+				echo '<div class="col-lg-3 col-3">';
+					echo '<div class="small-box bg-info">';
+						echo '<div class="inner">';
+							echo '<h3>'.$agent_total.'</h3>';
+							echo '<p>'._QXZ("Agents Logged In").'</p>';
+						echo '</div>';
+						echo '<div class="icon"><i class="fa fa-users"></i></div>';
+						echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
+					echo '</div>';
+					echo '<div class="small-box bg-info">';
+						echo '<div class="inner">';
+							echo '<h3>'.$agent_incall.'</h3>';
+							echo '<p>'._QXZ("Agents In Calls").'</p>';
+						echo '</div>';
+						echo '<div class="icon"><i class="fa fa-phone"></i></div>';
+						echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
+					echo '</div>';
+					echo '<div class="small-box bg-info">';
+						echo '<div class="inner">';
+							echo '<h3>'.$agent_incall.'</h3>';
+							echo '<p>'._QXZ("Active Calls").'</p>';
+						echo '</div>';
+						echo '<div class="icon"><i class="fa fa-volume-up"></i></div>';
+						echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
+					echo '</div>';
+					echo '<div class="small-box bg-info">';
+						echo '<div class="inner">';
+							echo '<h3>'.$ringing_calls.'</h3>';
+							echo '<p>'._QXZ("Calls Ringing").'</p>';
+						echo '</div>';
+						echo '<div class="icon"><i class="fa fa-bell"></i></div>';
+						echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
 					echo '</div>';
 				echo '</div>';
-				echo '<div class="row">';
-					echo '<div class="col-lg-3 col-3">';
-						echo '<div class="small-box bg-info">';
-							echo '<div class="inner">';
-								echo '<h3>'.$agent_total.'</h3>';
-								echo '<p>'._QXZ("Agents Logged In").'</p>';
-							echo '</div>';
-							echo '<div class="icon"><i class="fa fa-users"></i></div>';
-							echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
-						echo '</div>';
-						echo '<div class="small-box bg-info">';
-							echo '<div class="inner">';
-								echo '<h3>'.$agent_incall.'</h3>';
-								echo '<p>'._QXZ("Agents In Calls").'</p>';
-							echo '</div>';
-							echo '<div class="icon"><i class="fa fa-phone"></i></div>';
-							echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
-						echo '</div>';
-						echo '<div class="small-box bg-info">';
-							echo '<div class="inner">';
-								echo '<h3>'.$agent_incall.'</h3>';
-								echo '<p>'._QXZ("Active Calls").'</p>';
-							echo '</div>';
-							echo '<div class="icon"><i class="fa fa-volume-up"></i></div>';
-							echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
-						echo '</div>';
-						echo '<div class="small-box bg-info">';
-							echo '<div class="inner">';
-								echo '<h3>'.$ringing_calls.'</h3>';
-								echo '<p>'._QXZ("Calls Ringing").'</p>';
-							echo '</div>';
-							echo '<div class="icon"><i class="fa fa-bell"></i></div>';
-							echo '<a href="realtime_report.php?report_display_type=HTML" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>';
+				echo '<div class="col-lg-9 col-9">';
+					echo '<div class="row">';
+						echo '<div class="col-12">';
+							echo '<table class="table table-bordered table-striped">';
+								echo '<thead>';
+									echo '<tr>';
+										echo '<th class="w-25 text-center">'._QXZ("Records").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Active").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Inactive").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Total").'</th>';
+									echo '</tr>';
+								echo '</thead>';
+								echo '<tbody>';
+									echo '<tr>';
+										echo '<td><span class="p-2">'._QXZ("Users").'</span></td>';
+										echo '<td><span class="text-center">'.($users["Y"]+0).'</span></td>';
+										echo '<td><span class="text-center">'.($users["N"]+0).'</span></td>';
+										echo '<td><span class="text-center badge bg-primary">'.($users["Y"]+$users["N"]+0).'</span></td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td><span class="p-2">'._QXZ("Campaigns").'</span></td>';
+										echo '<td><span class="text-center">'.($campaigns["Y"]+0).'</span></td>';
+										echo '<td><span class="text-center">'.($campaigns["N"]+0).'</span></td>';
+										echo '<td><span class="text-center badge bg-primary">'.($campaigns["Y"]+$campaigns["N"]+0).'</span></td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td><span class="p-2">'._QXZ("Lists").'</span></td>';
+										echo '<td><span class="text-center">'.($lists["Y"]+0).'</span></td>';
+										echo '<td><span class="text-center">'.($lists["N"]+0).'</span></td>';
+										echo '<td><span class="text-center badge bg-primary">'.($lists["Y"]+$lists["N"]+0).'</span></td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td><span class="p-2">'._QXZ("In-Groups").'</span></td>';
+										echo '<td><span class="text-center">'.($ingroups["Y"]+0).'</span></td>';
+										echo '<td><span class="text-center">'.($ingroups["N"]+0).'</span></td>';
+										echo '<td><span class="text-center badge bg-primary">'.($ingroups["Y"]+$ingroups["N"]+0).'</span></td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td><span class="p-2">'._QXZ("DIDs").'</span></td>';
+										echo '<td><span class="text-center">'.($dids["Y"]+0).'</span></td>';
+										echo '<td><span class="text-center">'.($dids["N"]+0).'</span></td>';
+										echo '<td><span class="text-center badge bg-primary">'.($dids["Y"]+$dids["N"]+0).'</span></td>';
+									echo '</tr>';
+								echo '</tbody>';
+							echo '</table>';
 						echo '</div>';
 					echo '</div>';
-					echo '<div class="col-lg-9 col-9">';
-						echo '<div class="row">';
-							echo '<div class="col-12">';
-								echo '<table class="table table-bordered table-striped">';
-									echo '<thead>';
-										echo '<tr>';
-											echo '<th class="w-25 text-center">'._QXZ("Records").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Active").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Inactive").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Total").'</th>';
-										echo '</tr>';
-									echo '</thead>';
-									echo '<tbody>';
-										echo '<tr>';
-											echo '<td><span class="p-2">'._QXZ("Users").'</span></td>';
-											echo '<td><span class="text-center">'.($users["Y"]+0).'</span></td>';
-											echo '<td><span class="text-center">'.($users["N"]+0).'</span></td>';
-											echo '<td><span class="text-center badge bg-primary">'.($users["Y"]+$users["N"]+0).'</span></td>';
-										echo '</tr>';
-										echo '<tr>';
-											echo '<td><span class="p-2">'._QXZ("Campaigns").'</span></td>';
-											echo '<td><span class="text-center">'.($campaigns["Y"]+0).'</span></td>';
-											echo '<td><span class="text-center">'.($campaigns["N"]+0).'</span></td>';
-											echo '<td><span class="text-center badge bg-primary">'.($campaigns["Y"]+$campaigns["N"]+0).'</span></td>';
-										echo '</tr>';
-										echo '<tr>';
-											echo '<td><span class="p-2">'._QXZ("Lists").'</span></td>';
-											echo '<td><span class="text-center">'.($lists["Y"]+0).'</span></td>';
-											echo '<td><span class="text-center">'.($lists["N"]+0).'</span></td>';
-											echo '<td><span class="text-center badge bg-primary">'.($lists["Y"]+$lists["N"]+0).'</span></td>';
-										echo '</tr>';
-										echo '<tr>';
-											echo '<td><span class="p-2">'._QXZ("In-Groups").'</span></td>';
-											echo '<td><span class="text-center">'.($ingroups["Y"]+0).'</span></td>';
-											echo '<td><span class="text-center">'.($ingroups["N"]+0).'</span></td>';
-											echo '<td><span class="text-center badge bg-primary">'.($ingroups["Y"]+$ingroups["N"]+0).'</span></td>';
-										echo '</tr>';
-										echo '<tr>';
-											echo '<td><span class="p-2">'._QXZ("DIDs").'</span></td>';
-											echo '<td><span class="text-center">'.($dids["Y"]+0).'</span></td>';
-											echo '<td><span class="text-center">'.($dids["N"]+0).'</span></td>';
-											echo '<td><span class="text-center badge bg-primary">'.($dids["Y"]+$dids["N"]+0).'</span></td>';
-										echo '</tr>';
-									echo '</tbody>';
-								echo '</table>';
-							echo '</div>';
+					echo '<div class="row">';
+						echo '<div class="col-6">';
+							//etiqueta arriba noactivityfortodays
+							$today=date("Y-m-d");
+							$yesterday=date("Y-m-d", mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+							$thirtydays=date("Y-m-d", mktime(0,0,0,date("m"),date("d")-29,date("Y")));
+
+							$total_calls=0;
+							$total_inbound=0;
+							$total_outbound=0;
+							$stmt="SELECT stats_type,sum(total_calls) from vicidial_daily_max_stats where campaign_id!='' and stats_flag='OPEN' and stats_date='$today' $LOGallowed_campaignsSQL group by stats_type;";
+							if ($DB) {echo "|$stmt|\n";}
+							$rslt=mysql_to_mysqli($stmt, $link);
+							$rows_to_print = mysqli_num_rows($rslt);
+							if ($rows_to_print > 0) 
+								{
+								while ($rowx=mysqli_fetch_row($rslt)) 
+									{
+									$total_calls += $rowx[1];
+									if (preg_match('/INGROUP/', $rowx[0])) {$total_inbound+=$rowx[1];}
+									if (preg_match('/CAMPAIGN/', $rowx[0])) {$total_outbound+=$rowx[1];}
+									}
+								}
+
+							$stmt="SELECT * from vicidial_daily_max_stats where stats_date='$today' and stats_flag='OPEN' and stats_type='TOTAL' $LOGallowed_campaignsSQL order by stats_date, campaign_id asc";
+							if ($DB) {echo "|$stmt|\n";}
+							$rslt=mysql_to_mysqli($stmt, $link);
+							//fin etiqueta arriba noactivityfortodays
+							echo '<h4 class="text-center">'._QXZ("Total Stats for Today").'</h4>';
+							echo '<table class="table table-bordered">';
+								echo '<thead>';
+									echo '<tr>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Calls").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Inbound Calls").'</th>';
+									echo '</tr>';
+								echo '</thead>';
+								echo '<tbody>';
+									echo '<tr>';
+										$row=mysqli_fetch_array($rslt);
+										if (mysqli_num_rows($rslt)>0) 
+										{
+										echo '<td><span class="p-2">'.($total_calls+0).'</span></td>';
+										echo '<td><span class="p-2">'.($total_inbound+0).'</span></td>';
+										}
+										else
+										{
+										echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
+										}
+									echo '</tr>';
+								echo '</tbody>';
+								echo '<thead>';
+									echo '<tr>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Outbound Calls").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Maximum Agents").'</th>';
+									echo '</tr>';
+								echo '</thead>';
+								echo '<tbody>';
+									echo '<tr>';
+										if (mysqli_num_rows($rslt)>0) 
+										{
+											echo '<td><span class="p-2">'.($total_outbound+0).'</span></td>';
+											echo '<td><span class="p-2">'.($row["max_agents"]+0).'</span></td>';
+										}
+										else
+										{
+										echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
+										}
+									echo '</tr>';
+								echo '</tbody>';
+							echo '</table>';
 						echo '</div>';
-						echo '<div class="row">';
-							echo '<div class="col-6">';
-								//etiqueta arriba noactivityfortodays
-								$today=date("Y-m-d");
-								$yesterday=date("Y-m-d", mktime(0,0,0,date("m"),date("d")-1,date("Y")));
-								$thirtydays=date("Y-m-d", mktime(0,0,0,date("m"),date("d")-29,date("Y")));
-
-								$total_calls=0;
-								$total_inbound=0;
-								$total_outbound=0;
-								$stmt="SELECT stats_type,sum(total_calls) from vicidial_daily_max_stats where campaign_id!='' and stats_flag='OPEN' and stats_date='$today' $LOGallowed_campaignsSQL group by stats_type;";
-								if ($DB) {echo "|$stmt|\n";}
-								$rslt=mysql_to_mysqli($stmt, $link);
-								$rows_to_print = mysqli_num_rows($rslt);
-								if ($rows_to_print > 0) 
+						echo '<div class="col-6">';
+							$total_calls=0;
+							$total_inbound=0;
+							$total_outbound=0;
+							$stmt="SELECT stats_type,sum(total_calls) from vicidial_daily_max_stats where campaign_id!='' and stats_flag='CLOSED' and stats_date='$yesterday' $LOGallowed_campaignsSQL group by stats_type;";
+							if ($DB) {echo "|$stmt|\n";}
+							$rslt=mysql_to_mysqli($stmt, $link);
+							$rows_to_print = mysqli_num_rows($rslt);
+							if ($rows_to_print > 0) 
+								{
+								while ($rowx=mysqli_fetch_row($rslt)) 
 									{
-									while ($rowx=mysqli_fetch_row($rslt)) 
-										{
-										$total_calls += $rowx[1];
-										if (preg_match('/INGROUP/', $rowx[0])) {$total_inbound+=$rowx[1];}
-										if (preg_match('/CAMPAIGN/', $rowx[0])) {$total_outbound+=$rowx[1];}
-										}
+									$total_calls += $rowx[1];
+									if (preg_match('/INGROUP/', $rowx[0])) {$total_inbound+=$rowx[1];}
+									if (preg_match('/CAMPAIGN/', $rowx[0])) {$total_outbound+=$rowx[1];}
 									}
-
-								$stmt="SELECT * from vicidial_daily_max_stats where stats_date='$today' and stats_flag='OPEN' and stats_type='TOTAL' $LOGallowed_campaignsSQL order by stats_date, campaign_id asc";
-								if ($DB) {echo "|$stmt|\n";}
-								$rslt=mysql_to_mysqli($stmt, $link);
-								//fin etiqueta arriba noactivityfortodays
-								echo '<h4 class="text-center">'._QXZ("Total Stats for Today").'</h4>';
+								}
+							$stmt="SELECT * from vicidial_daily_max_stats where stats_date='$yesterday' and stats_type='TOTAL' $LOGallowed_campaignsSQL order by stats_date, campaign_id asc";
+							if ($DB) {echo "|$stmt|\n";}
+							$rslt=mysql_to_mysqli($stmt, $link);
+							echo '<h4 class="text-center">'._QXZ("Total Stats for Yesterday").'</h4>';
 								echo '<table class="table table-bordered">';
-									echo '<thead>';
-										echo '<tr>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Calls").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Inbound Calls").'</th>';
-										echo '</tr>';
-									echo '</thead>';
-									echo '<tbody>';
-										echo '<tr>';
-											if (mysqli_num_rows($rslt)>0) 
-											{
-											echo '<td><span class="p-2">'.($total_calls+0).'</span></td>';
-											echo '<td><span class="p-2">'.($total_inbound+0).'</span></td>';
-											}
-											else
-											{
-											echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
-											}
-										echo '</tr>';
-									echo '</tbody>';
-									echo '<thead>';
-										echo '<tr>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Outbound Calls").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Maximum Agents").'</th>';
-										echo '</tr>';
-									echo '</thead>';
-									echo '<tbody>';
-										echo '<tr>';
-											if (mysqli_num_rows($rslt)>0) 
-											{
-											echo '<td><span class="p-2">'.($total_outbound+0).'</span></td>';
-											echo '<td><span class="p-2">'.($row["max_agents"]+0).'</span></td>';
-											}
-											else
-											{
-											echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
-											}
-										echo '</tr>';
-									echo '</tbody>';
-								echo '</table>';
-							echo '</div>';
-							echo '<div class="col-6">';
-								$total_calls=0;
-								$total_inbound=0;
-								$total_outbound=0;
-								$stmt="SELECT stats_type,sum(total_calls) from vicidial_daily_max_stats where campaign_id!='' and stats_flag='CLOSED' and stats_date='$yesterday' $LOGallowed_campaignsSQL group by stats_type;";
-								if ($DB) {echo "|$stmt|\n";}
-								$rslt=mysql_to_mysqli($stmt, $link);
-								$rows_to_print = mysqli_num_rows($rslt);
-								if ($rows_to_print > 0) 
-									{
-									while ($rowx=mysqli_fetch_row($rslt)) 
+								echo '<thead>';
+									echo '<tr>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Calls").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Inbound Calls").'</th>';
+									echo '</tr>';
+								echo '</thead>';
+								echo '<tbody>';
+									echo '<tr>';
+										$row=mysqli_fetch_array($rslt);
+										if (mysqli_num_rows($rslt)>0) 
 										{
-										$total_calls += $rowx[1];
-										if (preg_match('/INGROUP/', $rowx[0])) {$total_inbound+=$rowx[1];}
-										if (preg_match('/CAMPAIGN/', $rowx[0])) {$total_outbound+=$rowx[1];}
+										echo '<td><span class="p-2">'.($row["total_calls"]+0)." / ".($total_calls+0).'</span></td>';
+										echo '<td><span class="p-2">'.($total_inbound+0).'</span></td>';
 										}
-									}
-								$stmt="SELECT * from vicidial_daily_max_stats where stats_date='$yesterday' and stats_type='TOTAL' $LOGallowed_campaignsSQL order by stats_date, campaign_id asc";
-								if ($DB) {echo "|$stmt|\n";}
-								$rslt=mysql_to_mysqli($stmt, $link);
-								echo '<h4 class="text-center">'._QXZ("Total Stats for Yesterday").'</h4>';
-									echo '<table class="table table-bordered">';
-									echo '<thead>';
-										echo '<tr>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Calls").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Inbound Calls").'</th>';
-										echo '</tr>';
-									echo '</thead>';
-									echo '<tbody>';
-										echo '<tr>';
-											if (mysqli_num_rows($rslt)>0) 
-											{
-											echo '<td><span class="p-2">'.($row["total_calls"]+0)." / ".($total_calls+0).'</span></td>';
-											echo '<td><span class="p-2">'.($total_inbound+0).'</span></td>';
-											}
-											else
-											{
-											echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
-											}
-										echo '</tr>';
-									echo '</tbody>';
-									echo '<thead>';
-										echo '<tr>';
-											echo '<th class="w-25 text-center">'._QXZ("Total Outbound Calls").'</th>';
-											echo '<th class="w-25 text-center">'._QXZ("Maximum Agents").'</th>';
-										echo '</tr>';
-									echo '</thead>';
-									echo '<tbody>';
-										echo '<tr>';
-											if (mysqli_num_rows($rslt)>0) 
-											{
-											echo '<td><span class="p-2">'.($total_outbound+0).'</span></td>';
-											echo '<td><span class="p-2">'.($row["max_agents"]+0).'</span></td>';
-											}
-											else
-											{
-											echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
-											}
-										echo '</tr>';
-									echo '</tbody>';
-								echo '</table>';
-							echo '</div>';
+										else
+										{
+										echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
+										}
+									echo '</tr>';
+								echo '</tbody>';
+								echo '<thead>';
+									echo '<tr>';
+										echo '<th class="w-25 text-center">'._QXZ("Total Outbound Calls").'</th>';
+										echo '<th class="w-25 text-center">'._QXZ("Maximum Agents").'</th>';
+									echo '</tr>';
+								echo '</thead>';
+								echo '<tbody>';
+									echo '<tr>';
+										if (mysqli_num_rows($rslt)>0) 
+										{
+										echo '<td><span class="p-2">'.($total_outbound+0).'</span></td>';
+										echo '<td><span class="p-2">'.($row["max_agents"]+0).'</span></td>';	
+										}
+										else
+										{
+										echo '<td class="text-center" colspan="2"><small class="p-1">*** '._QXZ("NO ACTIVITY FOR").' '.$today.' ***</small></td>';
+										}
+									echo '</tr>';
+								echo '</tbody>';
+							echo '</table>';
 						echo '</div>';
 					echo '</div>';
 				echo '</div>';
 			echo '</div>';
-		echo '</section>';
+		echo '</div>';
 		/*
 		echo "<BR><FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
 
@@ -50222,35 +50216,7 @@ if ($ADD==999986)
 	echo "</TABLE></center></form>\n";
 	}
 ##### END available postal_codes display page #####
-
-
-echo "</TD></TR></TABLE></center>\n";
-echo "</TD></TR></TABLE></center>\n";
-
-$ENDtime = date("U");
-
-$RUNtime = ($ENDtime - $STARTtime);
-
-echo "</TD></TR>\n";
-echo "<TR><TD bgcolor=#$SSmenu_background ALIGN=CENTER>\n";
-echo "<FONT STYLE=\"font-family:HELVETICA;font-size:9;color:white;\"><br><br><!-- RUNTIME: $RUNtime seconds<BR> -->";
-echo _QXZ("VERSION").": $admin_version<BR>";
-echo _QXZ("BUILD").": $build\n";
-if (!preg_match("/_BUILD_/",$SShosted_settings))
-	{echo "<BR><a href=\"$PHP_SELF?ADD=999995\"><font color=white>&copy; 2022 ViciDial Group</font></a><BR><img src=\"images/pixel.gif\">";}
-echo "</FONT>\n";
 ?>
-<footer class="main-footer">
-  <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-  All rights reserved.
-  <div class="float-right d-none d-sm-inline-block">
-	<b>Version</b> 3.2.0
-  </div>
-</footer>
-
-</TD><TD BGCOLOR=#<?php echo $SSframe_background ?>>
-</TD></TR><TABLE>
-</body>
 <script language="Javascript">
 if (!window.A_TCALSIDX)
 	{
@@ -50260,6 +50226,21 @@ if (!window.A_TCALSIDX)
 		window.detachEvent('onscroll', f_tcalHideAll);
 	}
 </script>
+		</section>
+	</div>
+	<footer class="main-footer">
+		<strong>&copy; <?php echo DATE('Y'); ?> SystemDial by Xolit.</strong>
+		All rights reserved.
+		<div class="float-right d-none d-sm-inline-block">
+		&nbsp;&nbsp;-&nbsp;&nbsp;<b><?php echo _QXZ("VERSION") ?> </b> <?php echo $admin_version; ?>
+		</div>
+		<div class="float-right d-none d-sm-inline-block">
+			<b><?php echo _QXZ("BUILD") ?> </b> <?php echo $build; ?>
+		</div>
+	</footer>
+	<aside class="control-sidebar control-sidebar-dark"></aside>
+</div>
+</body>
 <?php
 
 if ( ($SSnocache_admin=='1') or ( ($SSadmin_modify_refresh > 1) and ($modify_footer_refresh > 0) and (strlen($modify_url)>10) ) )
