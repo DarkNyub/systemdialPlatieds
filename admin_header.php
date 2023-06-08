@@ -1827,16 +1827,20 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 		</ul>
 	</nav>
 	
-	<aside class="main-sidebar sidebar-dark-primary elevation-4">
-		<a href="<?php echo $ADMIN ?>" class="brand-link">
-			<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="brand-image ">
+	<aside class="main-sidebar sidebar-dark-primary">
+		<a href="<?php echo $ADMIN ?>" class="brand-link text-center">
+			<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="w-75">
 			<span class="brand-text font-weight-light">&nbsp;</span>
 		</a>
 
 		<div class="sidebar">
 			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+				<div class="image">
+					<i class="fa fa-user fa-2x"></i>
+				</div>
 				<div class="info">
 					<a class="d-block"><?php echo $PHP_AUTH_USER ?></a>
+
 				</div>
 			</div>
 			<nav class="mt-2">

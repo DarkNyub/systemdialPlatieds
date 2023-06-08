@@ -4,3 +4,14 @@
 .cursor_default{
     cursor: default !important;
 }
+.sidebar-dark-primary{
+  background-color:#030033 !important;
+}
+.active{
+  background-color:#D0CCFF !important;
+}
+
+.bg-info{
+  background-color: #D0CCFF !important;
+  color: #000000 !important;
+}
