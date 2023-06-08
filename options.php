@@ -142,7 +142,7 @@ $audio_store_GSM_allowed=0;
 
 # CORS settings: (to enable, customize the variables below, and uncomment the "require_once('adminCORS.php');" line at the bottom)
 # (NOTE: The first 3 variables must be set for these features to be active)
-$CORS_allowed_origin		= 'https://xolit4-dev-ed--c.develop.vf.force.com|https://xolit2-dev-ed--c.develop.vf.force.com|https://systemdial.xolit.com|https://paginasamarillas--uat--c.sandbox.vf.force.com';	# if multiple origins allowed, separate them by a pipe (also allows PHP preg syntax)
+$CORS_allowed_origin		= '*';	# if multiple origins allowed, separate them by a pipe (also allows PHP preg syntax)
 									# examples: 'https://acme.org|https://internal.acme.org' or "https?:\/\/(.*\\.?example\\.com|localhost):?[0-9]*|null"
 $CORS_allowed_methods		= 'GET,POST,OPTIONS,HEAD';	# if multiple methods allowed, separate them by a comma 
 									# example: 'GET,POST,OPTIONS,HEAD'
@@ -153,7 +153,7 @@ $CORS_allowed_headers		= '*';	# passed in Access-Control-Allow-Headers http resp
 $CORS_allowed_credentials	= 'Y';	# 'Y' or 'N', whether to send credentials to browser or not
 $Xframe_options				= 'Y';	# Not part of CORS, but can prevent Iframe/embed/etc... use by foreign website, will populate for all affected scripts
 									# examples: 'N', 'SAMEORIGIN', 'DENY'   NOTE: using 'DENY' may break some admin screen functionality
-$CORS_debug					= 1;	# 0 = no, 1 = yes (default is no) This will generate a lot of log entries in a CORSdebug_log.txt file
+$CORS_debug					= 0;	# 0 = no, 1 = yes (default is no) This will generate a lot of log entries in a CORSdebug_log.txt file
 	require_once('adminCORS.php');
 
 ?>
