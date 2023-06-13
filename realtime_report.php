@@ -1258,6 +1258,9 @@ if (strlen($monitor_phone)>1)
 
 ?>
 
+
+
+
 <HTML>
 <HEAD>
 
@@ -1613,7 +1616,19 @@ function gather_realtime_content()
 		}
 	if (xmlhttp) 
 		{
-		RTupdate_query = "RTajax=1&DB=" + DB + "" + groupQS + usergroupQS + ingroupQS + "&adastats=" + adastats + "&SIPmonitorLINK=" + SIPmonitorLINK + "&IAXmonitorLINK=" + IAXmonitorLINK + "&usergroup=" + usergroup + "&UGdisplay=" + UGdisplay + "&UidORname=" + UidORname + "&orderby=" + orderby + "&SERVdisplay=" + SERVdisplay + "&CALLSdisplay=" + CALLSdisplay + "&PHONEdisplay=" + PHONEdisplay + "&CUSTPHONEdisplay=" + CUSTPHONEdisplay + "&CUSTINFOdisplay=" + CUSTINFOdisplay + "&with_inbound=" + with_inbound + "&monitor_active=" + monitor_active + "&monitor_phone=" + monitor_phone + "&ALLINGROUPstats=" + ALLINGROUPstats + "&DROPINGROUPstats=" + DROPINGROUPstats + "&NOLEADSalert=" + NOLEADSalert + "&CARRIERstats=" + CARRIERstats + "&PRESETstats=" + PRESETstats + "&AGENTtimeSTATS=" + AGENTtimeSTATS + "&parkSTATS=" + parkSTATS + "&SLAinSTATS=" + SLAinSTATS + "&INGROUPcolorOVERRIDE=" + INGROUPcolorOVERRIDE + "&droppedOFtotal=" + droppedOFtotal + "&report_display_type=" + report_display_type + "";
+		RTupdate_query = "RTajax=1&DB=" + DB + "" + groupQS + usergroupQS + 
+						ingroupQS + "&adastats=" + adastats + "&SIPmonitorLINK=" + SIPmonitorLINK +
+						 "&IAXmonitorLINK=" + IAXmonitorLINK + "&usergroup=" + usergroup + 
+						 "&UGdisplay=" + UGdisplay + "&UidORname=" + UidORname + "&orderby=" + orderby + 
+						 "&SERVdisplay=" + SERVdisplay + "&CALLSdisplay=" + CALLSdisplay + 
+						 "&PHONEdisplay=" + PHONEdisplay + "&CUSTPHONEdisplay=" + CUSTPHONEdisplay + 
+						 "&CUSTINFOdisplay=" + CUSTINFOdisplay + "&with_inbound=" + with_inbound + 
+						 "&monitor_active=" + monitor_active + "&monitor_phone=" + monitor_phone + 
+						 "&ALLINGROUPstats=" + ALLINGROUPstats + "&DROPINGROUPstats=" + DROPINGROUPstats + 
+						 "&NOLEADSalert=" + NOLEADSalert + "&CARRIERstats=" + CARRIERstats + 
+						 "&PRESETstats=" + PRESETstats + "&AGENTtimeSTATS=" + AGENTtimeSTATS + 
+						 "&parkSTATS=" + parkSTATS + "&SLAinSTATS=" + SLAinSTATS + "&INGROUPcolorOVERRIDE=" + INGROUPcolorOVERRIDE + 
+						 "&droppedOFtotal=" + droppedOFtotal + "&report_display_type=" + report_display_type + "";
 
 		xmlhttp.open('POST', 'AST_timeonVDADall.php'); 
 		xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
@@ -1968,9 +1983,36 @@ $rslt=mysql_to_mysqli($stmt, $link);
 if ($DB) {echo "$stmt\n";}
 $row=mysqli_fetch_row($rslt);
 $campaign_allow_inbound = $row[0];
+?>
+
+	<link rel="icon" type="image/png" href="dist/img/favicon.png"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	<link rel="stylesheet" href="dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="dist/css/custom_style.css">
+	
+	
+	<script language="JavaScript" src="plugins/jquery/jquery.min.js"></script>
+	<script language="JavaScript" src="plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script>$.widget.bridge('uibutton', $.ui.button)</script>
+	<script language="JavaScript" src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script language="JavaScript" src="plugins/moment/moment.min.js"></script>
+	<script language="JavaScript" src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script language="JavaScript" src="dist/js/adminlte.js"></script>
+
+
+<?php
+		echo '<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">';
+		echo '<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">';
+		echo '<script src="plugins/datatables/jquery.dataTables.min.js"></script>';
+		echo '<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>';
 
 echo "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">\n";
-echo "<TITLE>"._QXZ("$report_name").": $group</TITLE></HEAD><BODY BGCOLOR=WHITE marginheight=0 marginwidth=0 leftmargin=0 topmargin=0>\n";
+echo "<TITLE>"._QXZ("$report_name").": $group</TITLE>";
+echo "</HEAD>";
+echo "<BODY BGCOLOR=WHITE marginheight=0 marginwidth=0 leftmargin=0 topmargin=0>\n";
 
 if (preg_match("/LIMITED/",$report_display_type))
 	{
@@ -1990,7 +2032,7 @@ if (preg_match("/LIMITED/",$report_display_type))
 	}
 else
 	{
-	$short_header=1;
+	$short_header=0;
 
 	require("admin_header.php");
 
@@ -2020,11 +2062,7 @@ else
 	#echo "<INPUT TYPE=HIDDEN NAME=AGENTtimeSTATS ID=AGENTtimeSTATS VALUE=\"$AGENTtimeSTATS\">\n";
 
 	echo "<font class='top_head_key'>"._QXZ("$report_name")." &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \n";
-	echo "<span style=\"position:absolute;left:160px;z-index:20;\" id=campaign_select_list_link>\n";
-	echo "<TABLE WIDTH=250 CELLPADDING=0 CELLSPACING=0 BGCOLOR=\"#D9E6FE\"><TR><TD ALIGN=CENTER>\n";
-	echo "<a href=\"#\" onclick=\"showDiv('campaign_select_list');\"><font class='top_head_key'>"._QXZ("Choose Report Display Options")."</a>";
-	echo "</TD></TR></TABLE>\n";
-	echo "</span>\n";
+	
 	echo "<span style=\"position:absolute;left:0px;z-index:21;\" id=campaign_select_list>\n";
 	echo "<TABLE WIDTH=0 HEIGHT=0 CELLPADDING=0 CELLSPACING=0 BGCOLOR=\"#D9E6FE\"><TR><TD ALIGN=CENTER>\n";
 	echo "";
@@ -2035,9 +2073,13 @@ else
 	echo "$webphone_content\n$webphone_clpos\n";
 	echo "</TD></TR></TABLE>\n";
 	echo "</span>\n";
-	echo "<span style=\"position:absolute;left:10px;top:120px;z-index:14;\" id=agent_ingroup_display>\n";
-	echo " &nbsp; ";
+	echo "<span  id=agent_ingroup_display>\n";
+	echo " &nbsp; | ";
 	echo "</span>\n";
+	echo "<span  id=campaign_select_list_link>\n";
+	echo "<a href=\"#\" onclick=\"showDiv('campaign_select_list');\"><font class='top_head_key'>"._QXZ("Choose Report Display Options")."</a>";
+	echo "</span>\n";
+	echo " &nbsp; |  ";
 	echo "<a href=\"#\" onclick=\"update_variables('form_submit','','YES')\"><font class='top_settings_val'>"._QXZ("RELOAD NOW")."</font></a>";
 	if ($LOGuser_level > 7)
 		{
@@ -2069,7 +2111,7 @@ if (!preg_match("/WALL|LIMITED/",$report_display_type))
 		{echo "<BR><img src=\"images/pixel.gif\" width=1 height=$webphone_bufh>\n";}
 	echo "<BR>\n\n";
 
-
+	/*
 	if ($adastats<2)
 		{echo " &nbsp; &nbsp; &nbsp; <a href=\"#\" onclick=\"update_variables('adastats','');\"><font class=\"top_settings_val\"><span id=adastatsTXT>+ "._QXZ("VIEW MORE")."</span></font></a>";}
 	else
@@ -2106,6 +2148,7 @@ if (!preg_match("/WALL|LIMITED/",$report_display_type))
 		else
 			{echo " &nbsp; &nbsp; &nbsp; <a href=\"#\" onclick=\"update_variables('CUSTINFOdisplay','');\"><font class=\"top_settings_val\"><span id=CUSTINFOdisplayTXT>"._QXZ("SHOW CUST INFO")."</span></font></a>";}
 		}
+		*/
 	}
 
 #echo "</TD></TR></TABLE>";
