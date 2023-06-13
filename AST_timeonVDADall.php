@@ -2217,7 +2217,8 @@ else
 
 	if ( ($report_display_type!='WALL_1') and ($report_display_type!='WALL_2') and ($report_display_type!='WALL_3') and ($report_display_type!='WALL_4') and ($report_display_type!='LIMITED') and (!$mobile_device))
 		{
-		echo "<BR><table cellpadding=0 cellspacing=0><TR>";
+		/*echo "<BR><table cellpadding=0 cellspacing=0>";
+		echo "<TR>";
 		echo "<TD ALIGN=RIGHT><font class=\"top_settings_key\">"._QXZ("DIAL LEVEL").":</font></TD><TD ALIGN=LEFT><font class=\"top_settings_val\">&nbsp; $DIALlev&nbsp; &nbsp; </TD>";
 		echo "<TD ALIGN=RIGHT><font class=\"top_settings_key\">"._QXZ("TRUNK SHORT/FILL").":</font></TD><TD ALIGN=LEFT><font class=\"top_settings_val\">&nbsp; $balanceSHORT / $balanceFILL &nbsp; &nbsp; </TD>";
 		echo "<TD ALIGN=RIGHT><font class=\"top_settings_key\">"._QXZ("FILTER").":</font></TD><TD ALIGN=LEFT><font class=\"top_settings_val\">&nbsp; "._QXZ("$DIALfilter")." &nbsp; </TD>";
@@ -2371,7 +2372,7 @@ else
 
 		echo "$DROPINGROUPstatsHTML\n";
 		echo "$CARRIERstatsHTML\n";
-		echo "$PRESETstatsHTML\n";
+		echo "$PRESETstatsHTML\n";*/
 		}
 	else
 		{echo "<BR>\n";}

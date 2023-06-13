@@ -116,8 +116,6 @@ $Mhead_color =		'#A3C3D6';
 $Mmain_bgcolor =	'#015B91';
 
 ###
-
-
 $PHP_AUTH_USER=$_SERVER['PHP_AUTH_USER'];
 $PHP_AUTH_PW=$_SERVER['PHP_AUTH_PW'];
 $PHP_SELF=$_SERVER['PHP_SELF'];
@@ -6129,6 +6127,62 @@ else
 		echo "$VDdisplayMESSAGE: |$PHP_AUTH_USER|$auth_message|\n";
 		exit;
 		}
+		//Login
+		?>
+		<!--<!DOCTYPE html>
+		<html lang="en">
+			<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<title>SystemDial Login</title>
+				<link rel="icon" type="image/png" href="dist/img/favicon.png"/>
+				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+				<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+				<link rel="stylesheet" href="dist/css/adminlte.min.css">
+				<link rel="stylesheet" href="dist/css/custom_style.css">
+			</head>
+			<body class="hold-transition login-page">
+				<div class="login-box">
+					<div class="card card-outline sidebar-dark-primary">
+						<div class="card-header text-center">
+							<img src="dist/img/logosystemdial.png" alt="SystemDial Logo" class="w-75">
+						</div>
+						<div class="card-body">
+							<p class="login-box-msg text-white">Sign in to start your session</p>
+							<form action="admin.php" method="post">
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" name="user" placeholder="Login">
+										<div class="input-group-append">
+											<div class="input-group-text">
+												<span class="fas fa-user"></span>
+											</div>
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<input type="password" class="form-control" name="password" placeholder="Password">
+										<div class="input-group-append">
+											<div class="input-group-text">
+												<span class="fas fa-lock"></span>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12 text-center">
+											<button type="submit" class="btn btn-primary btn-block">Sign In</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<script src="plugins/jquery/jquery.min.js"></script>
+				<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+				<script src="dist/js/adminlte.min.js"></script>
+			</body>
+		</html>
+		-->
+		<?
 	Header("WWW-Authenticate: Basic realm=\"CONTACT-CENTER-ADMIN\"");
 	Header("HTTP/1.0 401 Unauthorized");
 	echo "$VDdisplayMESSAGE: |$PHP_AUTH_USER|$PHP_AUTH_PW|$auth_message|\n";
@@ -8224,16 +8278,6 @@ if ($ADD=="1A")
 	{
 	if ($LOGmodify_users==1)
 		{
-		##### BEGIN ID override optional section, if enabled it increments user by 1 ignoring entered value #####
-		$stmt = "SELECT count(*) FROM vicidial_override_ids where id_table='vicidial_users' and active='1';";
-		$rslt=mysql_to_mysqli($stmt, $link);
-		$voi_ct = mysqli_num_rows($rslt);
-		if ($voi_ct > 0)
-			{
-			$row=mysqli_fetch_row($rslt);
-			$voi_count = "$row[0]";
-			}
-		##### END ID override optional section #####
 		echo '<div class="container-fluid">';
 			echo '<div class="row">';
 				echo '<div class="col-12">';
@@ -8251,6 +8295,16 @@ if ($ADD=="1A")
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
+			##### BEGIN ID override optional section, if enabled it increments user by 1 ignoring entered value #####
+			$stmt = "SELECT count(*) FROM vicidial_override_ids where id_table='vicidial_users' and active='1';";
+			$rslt=mysql_to_mysqli($stmt, $link);
+			$voi_ct = mysqli_num_rows($rslt);
+			if ($voi_ct > 0)
+			{
+				$row=mysqli_fetch_row($rslt);
+				$voi_count = "$row[0]";
+			}
+			##### END ID override optional section #####
 			echo '<div class="row">';
 				echo '<div class="col-12">';
 					echo "<form action=$PHP_SELF method=POST name=userform id=userform>\n";
@@ -8605,6 +8659,33 @@ if ($ADD==111)
 			}
 		##### END ID override optional section #####
 
+
+		
+echo '<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">';
+echo '<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">';
+echo '<script src="plugins/datatables/jquery.dataTables.min.js"></script>';
+echo '<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>';
+
+echo '<div class="container-fluid">';
+	echo '<div class="row">';
+		echo '<div class="col-12">';
+			echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("USER LISTINGS").':</label>';
+				if (preg_match('/display_all/',$status))
+				{
+					$SQLstatus = '';
+					echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
+				}
+				else
+				{
+					$SQLstatus = "and active='Y'";
+					echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
+				}
+			echo '</p>';
+		echo '</div>';
+	echo '</div>';
+	$stmt="SELECT user,full_name,user_level,user_group,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
+	$rslt=mysql_to_mysqli($stmt, $link);
+	$people_to_print = mysqli_num_rows($rslt);		
 		echo "<TABLE><TR><TD>\n";
 		echo "<img src=\"images/icon_black_lists.png\" alt=\"Lists\" width=42 height=42> <FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
 
@@ -43640,9 +43721,6 @@ if ($ADD=="0A")
 		echo '<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">';
 		echo '<script src="plugins/datatables/jquery.dataTables.min.js"></script>';
 		echo '<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>';
-		$stmt="SELECT user,full_name,user_level,user_group,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
-		$rslt=mysql_to_mysqli($stmt, $link);
-		$people_to_print = mysqli_num_rows($rslt);
 
 		echo '<div class="container-fluid">';
 			echo '<div class="row">';
@@ -43661,7 +43739,9 @@ if ($ADD=="0A")
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-			
+			$stmt="SELECT user,full_name,user_level,user_group,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
+			$rslt=mysql_to_mysqli($stmt, $link);
+			$people_to_print = mysqli_num_rows($rslt);			
 			echo '<div class="row">';
 				echo '<div class="col-12">';
 					echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
@@ -43672,10 +43752,10 @@ if ($ADD=="0A")
 								echo '<th class="">'._QXZ("LEVEL").' </th>';
 								echo '<th class="">'._QXZ("GROUP").' </th>';
 								echo '<th class="">'._QXZ("ACTIVE").' </th>';
-								// echo '<th class="">'._QXZ("MODIFY").' </th>';
-								// echo '<th class="">'._QXZ("STATS").' </th>';
-								// echo '<th class="">'._QXZ("STATUS").' </th>';
-								// echo '<th class="">'._QXZ("TIME").' </th>';
+								echo '<th class="">'._QXZ("MODIFY").' </th>';
+								echo '<th class="">'._QXZ("STATS").' </th>';
+								echo '<th class="">'._QXZ("STATUS").' </th>';
+								echo '<th class="">'._QXZ("TIME").' </th>';
 							echo '</tr>';
 						echo '</thead>';
 						echo '<tbody>';
@@ -43685,15 +43765,15 @@ if ($ADD=="0A")
 								$row=mysqli_fetch_row($rslt);
 								echo '<tr>';
 									// <a href=\"$PHP_SELF?ADD=3&user=$row[0]\"></a>
-									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[0]</td>";
-									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
-									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
-									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
-									echo "<td"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
-									// echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
-									// echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
-									// echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
-									// echo "<td class='text-center'"; if ($SSadmin_row_click > 0) {echo " onclick=\"window.document.location='./AST_agent_time_sheet.php?agent=$row[0]'\"";} echo "><a href=\"./AST_agent_time_sheet.php?agent=$row[0]\">"._QXZ("TIME")."</a></td>\n";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[0]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
+									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./AST_agent_time_sheet.php?agent=$row[0]'\"";} echo "><a href=\"./AST_agent_time_sheet.php?agent=$row[0]\">"._QXZ("TIME")."</a></td>\n";
 								echo '</tr>';
 								$o++;
 							}
@@ -43703,6 +43783,7 @@ if ($ADD=="0A")
 			echo '</div>';
 		echo '</div>';
 		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
+
 /*
 	echo "<TABLE><TR><TD>\n";
 	echo "<FONT FACE=\"ARIAL,HELVETICA\" COLOR=BLACK SIZE=2>";
@@ -43788,13 +43869,6 @@ if ($ADD==10)
 		echo '<script src="plugins/datatables/jquery.dataTables.min.js"></script>';
 		echo '<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>';
 
-		$camp_group_SQL = $LOGadmin_viewable_groupsSQL;
-		if (strlen($whereLOGallowed_campaignsSQL) < 6)
-			{$camp_group_SQL = $whereLOGadmin_viewable_groupsSQL;}
-		$stmt="SELECT campaign_id,campaign_name,active,dial_method,auto_dial_level,lead_order,dial_statuses,user_group from vicidial_campaigns $whereLOGallowed_campaignsSQL $camp_group_SQL order by campaign_id;";
-		$rslt=mysql_to_mysqli($stmt, $link);
-		$campaigns_to_print = mysqli_num_rows($rslt);
-
 		echo '<div class="container-fluid">';
 			echo '<div class="row">';
 				echo '<div class="col-12">';
@@ -43812,6 +43886,12 @@ if ($ADD==10)
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
+			$camp_group_SQL = $LOGadmin_viewable_groupsSQL;
+			if (strlen($whereLOGallowed_campaignsSQL) < 6)
+				{$camp_group_SQL = $whereLOGadmin_viewable_groupsSQL;}
+			$stmt="SELECT campaign_id,campaign_name,active,dial_method,auto_dial_level,lead_order,dial_statuses,user_group from vicidial_campaigns $whereLOGallowed_campaignsSQL $camp_group_SQL order by campaign_id;";
+			$rslt=mysql_to_mysqli($stmt, $link);
+			$campaigns_to_print = mysqli_num_rows($rslt);
 			echo '<div class="row">';
 				echo '<div class="col-12">';
 					echo '<table id="tableUsersList" class="table table-borderless table-hover table-striped table-sm">';
@@ -43984,6 +44064,108 @@ if ($ADD==100)
 	if (preg_match('/CALLDATEUP/i', $stage))	{$SQLorder='order by list_lastcalldate asc';	$CALLDATElink='stage=CALLDATEDOWN';}
 	if (preg_match('/CALLDATEDOWN/i', $stage))	{$SQLorder='order by list_lastcalldate desc';	$CALLDATElink='stage=CALLDATEUP';}
 
+
+	echo '<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">';
+	echo '<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">';
+	echo '<script src="plugins/datatables/jquery.dataTables.min.js"></script>';
+	echo '<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>';
+
+	echo '<div class="container-fluid">';
+		echo '<div class="row">';
+			echo '<div class="col-12">';
+				echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-list"></i> '._QXZ("LIST LISTINGS").':</label>';
+					$rankLINK="";
+				if ($SSadmin_list_counts > 0)
+					{
+					if ($rank == '999')
+						{
+						$rankLINK = "&rank=999";
+						echo " &nbsp; <a href=\"$PHP_SELF?ADD=100\"><font size=1 color=black>"._QXZ("hide list leads counts")."</font></a>\n";
+						}
+					else
+						{
+						$rankLINK = "";
+						echo " &nbsp; <a href=\"$PHP_SELF?ADD=100&rank=999\"><font size=1 color=black>"._QXZ("show list leads counts")."</font></a>\n";
+						}
+					}
+				if ($SShide_inactive_lists > 0)
+					{
+					if ($status == 'display_all')
+						{
+						echo " &nbsp; &nbsp; <a href=\"$PHP_SELF?ADD=100$rankLINK\"><font size=1 color=black>"._QXZ("hide inactive lists")."</font></a>\n";
+						$rankLINK .= "&status=display_all";
+						}
+					else
+						{
+						echo " &nbsp; &nbsp; <a href=\"$PHP_SELF?ADD=100&status=display_all$rankLINK\"><font size=1 color=black>"._QXZ("show all lists")."</font></a>\n";
+						}
+					}
+				echo '</p>';
+			echo '</div>';
+		echo '</div>';
+		$list_hideSQL='';
+		if ( ($SShide_inactive_lists > 0) and ($status != 'display_all') )
+			{$list_hideSQL = "and active='Y'";}
+		$stmt="SELECT vls.list_id,list_name,list_description,count(*) as tally,active,list_lastcalldate,campaign_id,reset_time,DATE_FORMAT(expiration_date,'%Y%m%d'),local_call_time from vicidial_lists vls,vicidial_list vl where vls.list_id=vl.list_id $LOGallowed_campaignsSQL $list_hideSQL group by list_id $SQLorder";
+		if ( ($SSadmin_list_counts < 1) or ($rank != '999') )
+			{$stmt="SELECT list_id,list_name,list_description,'X' as tally,active,list_lastcalldate,campaign_id,reset_time,DATE_FORMAT(expiration_date,'%Y%m%d'),local_call_time from vicidial_lists where active IN('Y','N') $list_hideSQL $LOGallowed_campaignsSQL $SQLorder";}
+		$rslt=mysql_to_mysqli($stmt, $link);
+		$lists_to_print = mysqli_num_rows($rslt);		
+		echo '<div class="row">';
+			echo '<div class="col-12">';
+				echo '<table id="tableListt" class="table table-borderless table-hover table-striped table-sm">';
+					echo '<thead>';
+						echo '<tr class="bg-dark">';
+							echo '<th class="">'._QXZ("LIST ID").'</th>';
+							echo '<th class="">'._QXZ("LIST NAME").' </th>';
+							echo '<th class="">'._QXZ("DESCRIPTION").' </th>';
+							echo '<th class="">'._QXZ("RTIME").' </th>';
+							echo '<th class="">'._QXZ("LEADS COUNT").' </th>';
+							echo '<th class="">'._QXZ("CALL TIME").' </th>';
+							echo '<th class="">'._QXZ("ACTIVE").' </th>';
+							echo '<th class="">'._QXZ("LAST CALL DATE").' </th>';
+							echo '<th class="">'._QXZ("CAMPAIGN").' </th>';
+							echo '<th class="">'._QXZ("MODIFY").' </th>';
+						echo '</tr>';
+					echo '</thead>';
+					// echo '<tbody>';
+					// 	$lists_printed = '';
+					// 	$o=0;
+					// 	while ($lists_to_print > $o) 
+					// 	{
+					// 		$row=mysqli_fetch_row($rslt);
+					// 		echo '<tr>';
+					// 			// <a href=\"$PHP_SELF?ADD=3&user=$row[0]\"></a>
+					// 			echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[0]</td>";
+					// 			echo "<td class='text-center'>$row[1]</td>";
+					// 			echo "<td class='text-center'>$row[2]</td>";
+					// 			echo "<td class='text-center'>$row[7]</td>";
+					// 			echo "<td class='text-center'>$row[3]</td>";
+					// 			if ($row[9] == 'campaign')
+					// 			{echo "<td><font size=1> $row[9]</td>";}
+					// 			else
+					// 			{echo "<td class='text-center><a href=\"$PHP_SELF?ADD=311111111&call_time_id=$row[9]\"> $row[9]</a></td>";}
+					// 			echo "<td class='text-center>"._QXZ("$row[4]");
+					// 			if ($row[8] < $EXPtestdate)
+					// 			{echo " <font color=red><B>"._QXZ("EXP")."</B></font>";}
+					// 			echo "</td>";
+					// 			echo "<td class='text-center>$row[5]</td>";
+					// 			if (!preg_match("/\|$row[6]\|/",$camp_list))
+					// 			{echo "<td><font color=red><B>$row[6]</B></font></td>";}
+					// 			else
+					// 			{echo "<td> $row[6]</td>";}
+					// 			echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
+					// 		echo '</tr>';
+					// 		$lists_printed .= "'$row[0]',";
+					// 		$o++;
+					// 	}
+					// echo '</tbody>';
+				echo '</table>';
+			echo '</div>';
+		echo '</div>';
+	echo '</div>';
+	echo '<script>$(function () {$("#tableListt").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
+	
 	$list_hideSQL='';
 	if ( ($SShide_inactive_lists > 0) and ($status != 'display_all') )
 		{$list_hideSQL = "and active='Y'";}
@@ -44021,6 +44203,7 @@ if ($ADD==100)
 			echo " &nbsp; &nbsp; <a href=\"$PHP_SELF?ADD=100&status=display_all$rankLINK\"><font size=1 color=black>"._QXZ("show all lists")."</font></a>\n";
 			}
 		}
+	
 	echo "<center><TABLE width=$section_width cellspacing=0 cellpadding=1>\n";
 	echo "<TR BGCOLOR=BLACK>";
 	echo "<TD><a href=\"$PHP_SELF?ADD=100&$LISTlink$rankLINK\"><B><FONT FACE=\"Arial,Helvetica\" size=1 color=white>"._QXZ("LIST ID")."</B></a></TD>";
@@ -47511,9 +47694,9 @@ if ($ADD==999999)
 			<div class="row">
 				<section class="col-lg-1 connectedSortable"></section>
 				<section class="col-lg-5 connectedSortable pr-5">
-					<div class="row d-none">
+					<div class="row">
 						<section class="col-lg-12">
-							<div class="card rounded-pill cursor_pointer cursor_pointer" data-toggle="modal" data-target="#SystemDial_Reports">
+							<div class="card rounded-pill cursor_pointer " data-toggle="modal" data-target="#SystemDial_Reports">
 								<div class="border-0 card-header text-center">
 									<span><?php echo _QXZ("SystemDial Reports"); ?></span>
 									<span class="float-right"><i class="badge-dark fa fa-angle-right p-1 pl-2 pr-2 rounded-circle"></i></span>
@@ -47578,20 +47761,20 @@ if ($ADD==999999)
 														if ( (preg_match("/Real-Time Main Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 														{?>
 															<li class="nav-item">
-																<a class="nav-link" href="realtime_report.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
+																<a class="nav-link" href="realtime_report.php?RR=4&DB=0&groups[]=ALL-ACTIVE&user_group_filter[]=ALL-GROUPS&user_group_filter[]=ALL-GROUPS&ingroup_filter[]=ALL-INGROUPS&adastats=1&SIPmonitorLINK=&IAXmonitorLINK=&usergroup=&UGdisplay=1&UidORname=1&orderby=timeup&SERVdisplay=0&CALLSdisplay=1&PHONEdisplay=1&CUSTPHONEdisplay=1&with_inbound=Y&monitor_active=WHISPER&monitor_phone=103&ALLINGROUPstats=&DROPINGROUPstats=0&NOLEADSalert=&CARRIERstats=0&PRESETstats=0&AGENTtimeSTATS=0&parkSTATS=0&SLAinSTATS=0&INGROUPcolorOVERRIDE=0&droppedOFtotal=0&report_display_type=HTML#"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
 															</li>
 														<?php 
 														}
 														if ( (preg_match("/Real-Time Campaign Summary/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 														{?>
-															<li class="nav-item d-none">
+															<li class="nav-item">
 																<a class="nav-link" href="AST_timeonVDADallSUMMARY.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Campaign Summary") ?></a>
 															</li>
 														<?php 
 														}
 														if ( (preg_match("/Real-Time Whiteboard Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 														{?>
-															<li class="nav-item d-none">
+															<li class="nav-item">
 																<a class="nav-link" href="AST_rt_whiteboard_rpt.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Whiteboard Report") ?></a>
 															</li>
 														<?php 
@@ -47609,7 +47792,7 @@ if ($ADD==999999)
 							</div>
 						</section>
 					</div>
-					<div class="row d-none">
+					<div class="row">
 						<section class="col-lg-12">
 							<div class="card rounded-pill cursor_pointer" data-toggle="modal" data-target="#Inbound_and_Outbound_Calling_Reports">
 								<div class="border-0 card-header text-center">
@@ -47630,15 +47813,90 @@ if ($ADD==999999)
 											<div class="row">
 												<div class="col-6">	
 													<ul class="nav nav-pills flex-column">
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_registro_llamada_marcacion.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Registro LLamadas Marcacion") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estado_de_conexion_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estado de conexión por agente") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estatus_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estatus por agente") ?></a>
-														</li>
+														<?
+														if ( (preg_match("/Inbound Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Report")."</a></li>";
+																echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERstats_v2.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Report v2")."</a></li>\n";}
+														if ( (preg_match("/Inbound Report by DID/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERstats.php?DID=Y\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Report by DID")."</a></li>\n";}
+														if ( (preg_match("/Inbound Service Level Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSER_service_level.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Service Level Report")."</a></li>\n";}
+														if ( (preg_match("/Inbound Summary Hourly Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERsummary_hourly.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Summary Hourly Report")."</a></li>\n";}
+														if ( (preg_match("/Inbound Daily Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_inbound_daily_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Daily Report")."</a></li>\n";}
+														if ( (preg_match("/Inbound DID Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_DIDstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound DID Report")."</a></li>\n";}
+														if ( (preg_match("/Inbound DID Summary Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_DIDstats_v2.php\"><i class='far fa-circle text-danger'></i> "._QXZ("DID Summary")."</a></li>\n";}
+														if ( (preg_match("/Agent DID Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agentDIDstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Agent DID")."</a></li>\n";}
+														if ( (preg_match("/Inbound IVR Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_IVRstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound IVR Report")."</a></li>\n";}
+														if ( (preg_match("/Inbound Forecasting Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_inbound_forecasting.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Forecasting Report")."</a></li>";
+															if ( (preg_match("/Advanced Forecasting Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"Erlang_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Forecasting Report Advanced")."</a></li>";}
+															}
+														if ( (preg_match("/Outbound Calling Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_VDADstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Outbound Calling Report")."</a></li>\n";}
+														
+														?>
+													</ul>
+												</div>	
+												<div class="col-6">	
+													<ul class="nav nav-pills flex-column">
+														<?
+														if ( (preg_match("/Outbound Summary Interval Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_OUTBOUNDsummary_interval.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Outbound Summary Interval Report")."</a></li>\n";}
+													if ( (preg_match("/Outbound IVR Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_IVRstats.php?type=outbound\"><i class='far fa-circle text-danger'></i> "._QXZ("Outbound IVR Report")."</a>";
+														if ($LOGexport_reports >= 1)
+															{
+															if ( (preg_match("/Export Calls Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+																{echo "<li class='nav-item'><a class='nav-link' href=\"call_report_export.php?ivr_export=YES\"><i class='far fa-circle text-danger'></i> "._QXZ("Outbound IVR Report Export")."</a></li>";}
+															}
+														echo "</li>\n";
+														if ( (preg_match("/Callmenu Survey Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CMstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Callmenu Agent")."</a></li>\n";}
+														}
+													if ( (preg_match("/Outbound Lead Source Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_source_vlc_status_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Outbound Lead Source Report")."</a></li>\n";}
+													if ( (preg_match("/Fronter - Closer Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"fcstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Fronter - Closer Report")."</a></li>\n";}
+													if ( (preg_match("/Fronter - Closer Detail Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"fcstats_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Fronter - Closer Report Detail")."</a></li>\n";}
+													if ( (preg_match("/Lists Pass Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_LISTS_pass_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Lists Pass Report")."</a></li>\n";}
+													if ( (preg_match("/Lists Campaign Statuses Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_LISTS_campaign_stats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Lists Campaign Statuses Report")."</a></li>\n";}
+													if ( (preg_match("/Called Counts List IDs Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"called_counts_multilist_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Called Counts List IDs Report")."</a></li>\n";}
+
+													if ( (preg_match("/Campaign Status List Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_campaign_status_list_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Campaign Status List Report")."</a></li>\n";}
+													if ( ( (preg_match("/Dialer Inventory Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) ) and ($inventory_report_count > 0) )
+														{echo "<li class='nav-item'><a class='nav-link' href=\"AST_dialer_inventory_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Dialer Inventory Report")."</a></li>\n";}
+													if ($SSemail_enabled > 0)
+														{
+														if ( ( (preg_match("/Inbound Report/",$LOGallowed_reports)) and (preg_match("/Inbound Email Report/",$LOGallowed_reports)) ) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERstats_v2.php?EMAIL=Y\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Email Report")."</a></li>\n";}
+														if ( (preg_match("/Email Log Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_email_log_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Email Log Report")."</a></li>\n";}
+														}
+													if ($SSallow_chats > 0)
+														{
+														if ( ( (preg_match("/Inbound Report/",$LOGallowed_reports)) and (preg_match("/Inbound Chat Report/",$LOGallowed_reports)) ) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_CLOSERstats_v2.php?CHAT=Y\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Chat Report")."</a></li>\n";}
+														}
+													if ($LOGexport_reports >= 1)
+														{
+														if ( (preg_match("/Export Calls Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"call_report_export.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Export Calls Report")."</a></li>\n";}
+														if ( (preg_match("/Export Leads Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"lead_report_export.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Export Leads Report")."</a></li>\n";}
+														}
+														?>
 													</ul>
 												</div>	
 											</div>
@@ -47653,7 +47911,7 @@ if ($ADD==999999)
 					</div>
 				</section>
 				<section class="col-lg-5 connectedSortable pr-5">
-					<div class="row d-none">
+					<div class="row">
 						<section class="col-lg-12">
 							<div class="card rounded-pill cursor_pointer" data-toggle="modal" data-target="#Agent_Reports">
 								<div class="border-0 card-header text-center">
@@ -47674,15 +47932,39 @@ if ($ADD==999999)
 											<div class="row">
 												<div class="col-6">	
 													<ul class="nav nav-pills flex-column">
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_registro_llamada_marcacion.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Registro LLamadas Marcacion") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estado_de_conexion_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estado de conexión por agente") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estatus_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estatus por agente") ?></a>
-														</li>
+														<?php
+														if ( (preg_match("/Agent Time Detail/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_time_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Agent Time Detail")."</a></li>\n";}
+														if ( (preg_match("/Agent Status Detail/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_status_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Agent Status Detail")."</a></li>\n";}
+														if ( (preg_match("/Agent Inbound Status Summary/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_inbound_status.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Inbound Summary")."</a></li>\n";}
+														if ( (preg_match("/Agent Performance Detail/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_performance_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Agent Performance Detail")."</a></li>\n";}
+														if ( (preg_match("/Team Performance Detail/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_team_performance_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Team Performance Detail")."</a></li>\n";}
+														if ( (preg_match("/Performance Comparison Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_performance_comparison_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Performance Comparison Report")."</a></li>\n";}
+														if ( (preg_match("/Single Agent Daily$/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_days_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Single Agent Daily")."</a></li>\n";}
+														?>
+													</ul>
+												</div>	
+												<div class="col-6">	
+													<ul class="nav nav-pills flex-column">
+														<?php
+														if ( (preg_match("/Single Agent Daily Time/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_days_time.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Single Agent Time")."</a></li>\n";}
+														if ( (preg_match("/User Group Login Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_usergroup_login_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("User Group Login Report")."</a></li>\n";}
+														if ( (preg_match("/User Group Hourly Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_user_group_hourly_detail.php\"><i class='far fa-circle text-danger'></i> "._QXZ("User Group Hourly Report")."</a></li>";
+															echo "<li class='nav-item'><a class='nav-link' href=\"AST_user_group_hourly_detail_v2.php\"><i class='far fa-circle text-danger'></i> "._QXZ("User Group Hourly Report v2")."</a></li>\n";}
+														if ( (preg_match("/User Stats/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"user_stats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("User Stats")."</a></li>\n";}
+														if ( (preg_match("/User Time Sheet/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_agent_time_sheet.php\"><i class='far fa-circle text-danger'></i> "._QXZ("User Time Sheet")."</a></li>\n";}
+														?>
 													</ul>
 												</div>	
 											</div>
@@ -47695,7 +47977,7 @@ if ($ADD==999999)
 							</div>
 						</section>
 					</div>
-					<div class="row d-none">
+					<div class="row">
 						<section class="col-lg-12">
 							<div class="card rounded-pill cursor_pointer" data-toggle="modal" data-target="#Time_Clock_Reports">
 								<div class="border-0 card-header text-center">
@@ -47716,15 +47998,29 @@ if ($ADD==999999)
 											<div class="row">
 												<div class="col-6">	
 													<ul class="nav nav-pills flex-column">
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_registro_llamada_marcacion.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Registro LLamadas Marcacion") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estado_de_conexion_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estado de conexión por agente") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estatus_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estatus por agente") ?></a>
-														</li>
+														<?php
+														if ( (preg_match("/User Timeclock Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{?>
+															<li class="nav-item">
+																<a class="nav-link" href="timeclock_report.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("User Timeclock Report") ?></a>
+															</li>
+														<?php 
+														}
+														if ( (preg_match("/User Group Timeclock Status Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{?>
+															<li class="nav-item">
+																<a class="nav-link" href="timeclock_status.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("User Group Timeclock Status Report") ?></a>
+															</li>
+														<?php 
+														}
+														if ( (preg_match("/User Timeclock Detail Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+														{?>
+															<li class="nav-item">
+																<a class="nav-link" href="AST_agent_timeclock_detail.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("User Timeclock Detail Report") ?></a>
+															</li>
+														<?php 
+														}
+														?>
 													</ul>
 												</div>	
 											</div>
@@ -47737,7 +48033,7 @@ if ($ADD==999999)
 							</div>
 						</section>
 					</div>
-					<div class="row d-none">
+					<div class="row">
 						<section class="col-lg-12">
 							<div class="card rounded-pill cursor_pointer" data-toggle="modal" data-target="#Other_Reports_and_Links">
 								<div class="border-0 card-header text-center">
@@ -47758,15 +48054,46 @@ if ($ADD==999999)
 											<div class="row">
 												<div class="col-6">	
 													<ul class="nav nav-pills flex-column">
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_registro_llamada_marcacion.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Registro LLamadas Marcacion") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estado_de_conexion_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estado de conexión por agente") ?></a>
-														</li>
-														<li class="nav-item">
-															<a class="nav-link" href="AST_SystemDial_estatus_por_agente.php"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Estatus por agente") ?></a>
-														</li>
+														<?php
+														if ( (preg_match("/Server Performance Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"AST_server_performance.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Server Performance Report")."</a></li>\n";}
+												
+														if ( (preg_match("/Maximum System Stats/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+															{echo "<li class='nav-item'><a class='nav-link' href=\"admin.php?ADD=999992&stage=TOTAL\"><i class='far fa-circle text-danger'></i> "._QXZ("Maximum System Stats")."</a></li>\n";}
+												
+														if ( ($LOGuser_level >= 9) and ( (preg_match("/Administration Change Log/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) ) )
+															{
+															echo "<li class='nav-item'><a class='nav-link' href=\"$PHP_SELF?ADD=700000000000000\"><i class='far fa-circle text-danger'></i> "._QXZ("Administration Change Log")."</a></li>\n";
+															}
+														if ($SSenable_queuemetrics_logging > 0)
+															{
+															echo "<li class='nav-item'><a class='nav-link' href=\"$queuemetrics_url_LU\"><i class='far fa-circle text-danger'></i> "._QXZ("QueueMetrics Reports")."</a></li>\n";
+															}
+														?>
+													</ul>
+												</div>
+												<div class="col-6">	
+													<ul class="nav nav-pills flex-column">
+														<?php
+														if ($SSenable_vtiger_integration > 0)
+															{
+															echo "<li class='nav-item'><a class='nav-link' href=\"$vtiger_url_LU\"><i class='far fa-circle text-danger'></i> "._QXZ("VtigerCRM Home")."</a></li>\n";
+															}
+														if ( ($list_update_count > 0) and ( (preg_match("/List Update Stats/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) ) )
+															{
+															echo "<li class='nav-item'><a class='nav-link' href=\"./AST_LIST_UPDATEstats.php\"><i class='far fa-circle text-danger'></i> "._QXZ("List Update Stats")."</a></li>\n";
+															}
+														if ($SScallcard_enabled > 0)
+															{
+															if ( (preg_match("/CallCard Search/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+																{echo "<li class='nav-item'><a class='nav-link' href=\"callcard_admin.php?action=SEARCH\"><i class='far fa-circle text-danger'></i> "._QXZ("CallCard Search")."</a></li>\n";}
+															}
+														if ($SSqc_features_active > 0)
+															{
+															if ( (preg_match("/Quality Control Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
+																{echo "<li class='nav-item'><a class='nav-link' href=\"AST_quality_control_report.php\"><i class='far fa-circle text-danger'></i> "._QXZ("Quality Control Report")."</a></li>\n";}
+															}
+														?>
 													</ul>
 												</div>	
 											</div>
@@ -47784,7 +48111,7 @@ if ($ADD==999999)
 			</div>
 
 
-<?php
+		<?php
 		if ( ($reports_only_user < 1) and ( (preg_match("/Report Page Servers Summary/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) ) )
 			{
 				$varserver = $PHP_SELF."?ADD=999999&stage=TIME";$varaction = " +";
@@ -47793,7 +48120,7 @@ if ($ADD==999999)
 				?> 
 			<div class="row">
 			<section class="col-12">
-				<table id class="table table-bordered table-hover table-sm table-striped">
+				<table id class="table table-hover table-sm table-striped">
 					<thead>
 						<tr>
 							<th class=""><span><?php echo _QXZ("SERVER") ?></span><a href="<?php echo $varserver ?>"><?php echo $varaction; ?></a></th>
@@ -47820,7 +48147,6 @@ if ($ADD==999999)
 						</tr>
 					</thead>
 					<tbody>
-						<tr></tr>
 						<?php
 						$o=0;
 						$web_u_time = date('U');
@@ -47869,10 +48195,10 @@ if ($ADD==999999)
 								$row=mysqli_fetch_row($rslt);
 								$agnt =		$row[0];
 								}
-							$server_bgcolor=' bgcolor="#B1E4BB"';
+							$server_bgcolor='';
 							$FROZEN_output='';
 							if ($web_u_time > $u_time)
-								{$server_bgcolor=' bgcolor=red';}
+								{$server_bgcolor=' class="bg-red"';}
 							if ( ($web_u_time > $reset_time) and ($web_u_time > $Sdb_time) and ($SSfrozen_server_call_clear > 0) )
 								{
 								#### if server is more than 90 seconds out of sync and no longer updating, check for live calls and agents and delete them
@@ -47900,17 +48226,18 @@ if ($ADD==999999)
 									if ($DB) {echo "|$stmt|\n";}
 									$rslt=mysql_to_mysqli($stmt, $link);
 
-									$FROZEN_output = "<tr><td> &nbsp; </td><td colspan=8>"._QXZ("FROZEN CALLS CLEARED").": $servercalls_count|$FCaffected_rows</td></tr>\n";
+									$FROZEN_output = "<tr><td> &nbsp; </td><td colspan=8><span>"._QXZ("FROZEN CALLS CLEARED").": $servercalls_count|$FCaffected_rows</span></td></tr>\n";
 									}
 								}
-							echo "<td><a href=\"$PHP_SELF?ADD=311111111111&server_id=$server_id[$o]\">$server_id[$o]</a></td>\n";
-							echo "<td>$server_description[$o]</td>\n";
-							echo "<td>$server_ip[$o]</td>\n";
-							echo "<td>"._QXZ("$active[$o]")." / "._QXZ("$active_asterisk_server[$o]")." / "._QXZ("$active_agent_login_server[$o]")."</td>\n";
-							echo "<td>$sysload[$o] - $cpu%</td>\n";
-							echo "<td>$channels_total[$o]</td>\n";
-							echo "<td>$agnt</td>\n";
-							echo "<td>$disk</td>\n";
+							echo "<tr $server_bgcolor>";
+							echo "<td><span class='text-uppercase'><a href=\"$PHP_SELF?ADD=311111111111&server_id=$server_id[$o]\">$server_id[$o]</span></a></td>\n";
+							echo "<td><span>$server_description[$o]</span></td>\n";
+							echo "<td><span>$server_ip[$o]</span></td>\n";
+							echo "<td><span>"._QXZ("$active[$o]")." / "._QXZ("$active_asterisk_server[$o]")." / "._QXZ("$active_agent_login_server[$o]")."</span></td>\n";
+							echo "<td><span>$sysload[$o] - $cpu%</span></td>\n";
+							echo "<td><span>$channels_total[$o]</span></td>\n";
+							echo "<td><span>$agnt</span></td>\n";
+							echo "<td><span>$disk</span></td>\n";
 							if ($stage == 'TIME')
 								{
 								$stmt="SELECT svn_revision from servers where server_ip='$server_ip[$o]';";
@@ -47922,29 +48249,36 @@ if ($ADD==999999)
 									$row=mysqli_fetch_row($rslt);
 									$s_ver = $row[0];
 									}
-								echo "<td>$s_time</td><td>$s_ver</td>";
+								echo "<td><span>$s_time</span></td>";
+								echo "<td><span>$s_ver</span></td>";
 								}
 							else
 								{
 								if ( (preg_match("/Real-Time Main Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 									{
-									echo "<td><a href=\"AST_timeonVDAD.php?server_ip=$server_ip[$o]\">"._QXZ("LINK")."</a></td>\n";
-									echo "<td><a href=\"AST_timeonVDAD.php?server_ip=$server_ip[$o]&closer_display=1\">"._QXZ("LINK")."</a></td>\n";
+									echo "<td><span><a href=\"AST_timeonVDAD.php?server_ip=$server_ip[$o]\">"._QXZ("LINK")."</a></span></td>\n";
+									echo "<td><span><a href=\"AST_timeonVDAD.php?server_ip=$server_ip[$o]&closer_display=1\">"._QXZ("LINK")."</a></span></td>\n";
 									}
 								else
 									{
-									echo "<td> &nbsp; </td>\n";
-									echo "<td> &nbsp; </td>\n";
+									echo "<td><span> &nbsp; </span></td>\n";
+									echo "<td><span> &nbsp; </span></td>\n";
 									}
 								}
 							echo "</tr>\n";
-							echo "<span>$FROZEN_output</span>";
+							echo "$FROZEN_output";
 							$o++;
 							}
 
 						if ($stage == 'TIME')
 							{
-							echo "<tr><td colspan=2> &nbsp; </td><td>"._QXZ("PHP Time")."</td><td colspan=5> &nbsp; </td><td>" . date("Y-m-d H:i:s") . "</td><td> &nbsp; </td></tr>";
+							echo "<tr>";
+								echo "<td colspan=2> &nbsp; </span></td>";
+								echo "<td><span>"._QXZ("PHP Time")."</span></td>";
+								echo "<td colspan=5><span> &nbsp; </span></td>";
+								echo "<td><span>" . date("Y-m-d H:i:s") . "</span></td>";
+								echo "<td><span> &nbsp; </span></td>";
+							echo "</tr>";
 
 							$stmt="SELECT NOW();";
 							$rslt=mysql_to_mysqli($stmt, $link);
@@ -47953,7 +48287,13 @@ if ($ADD==999999)
 							if ($dbtime_to_print)
 								{
 								$row=mysqli_fetch_row($rslt);
-								echo "<tr><td colspan=2> &nbsp; </td><td>"._QXZ("DB Time")."</td><td colspan=5> &nbsp; </td><td>$row[0]</td><td> &nbsp; </td></tr>";
+								echo "<tr>";
+									echo "<td colspan=2><span> &nbsp; </span></td>";
+									echo "<td><span>"._QXZ("DB Time")."</td>";
+									echo "<td colspan=5><span> &nbsp; </span></td>";
+									echo "<td></span>$row[0]</span></td>";
+									echo "<td></span> &nbsp; </span></td>";
+								echo "</tr>";
 								}
 							}
 							?>

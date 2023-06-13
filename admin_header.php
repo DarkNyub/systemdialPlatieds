@@ -1943,31 +1943,31 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 					if ($SSoutbound_autodial_active > 0)
 					{
 					?>
-					<li class="nav-item d-none <?php if($hh=='lists') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=100"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
-						<a href="<?php echo $ADMIN ?>?ADD=100" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p><?php echo _QXZ("Lists"); ?><i class="right fas fa-angle-left"></i></p></a>
+					<li class="nav-item <?php if($hh=='lists') echo 'menu-open'; ?>" onclick="window.document.location='<?php echo "$ADMIN?ADD=100"; ?>'"><!-- menuopen es para que permanezca abierto cuando se refresca-->
+						<a href="<?php echo $ADMIN ?>?ADD=100" class="nav-link"><i class="nav-icon fa fa-list"></i><p><?php echo _QXZ("Lists"); ?><i class="right fas fa-angle-left"></i></p></a>
 						<ul class="nav nav-treeview">
 							<li class="nav-item">
 								<a href="<?php echo $ADMIN ?>?ADD=100" class="nav-link <?php if($sh=='list') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Show Lists"); ?></p></a>
 							</li>
 							<?php if ($add_copy_disabled < 1) 
 							{ ?>
-							<li class="nav-item ">
+							<li class="nav-item d-none">
 								<a href="<?php echo $ADMIN ?>?ADD=111" class="nav-link <?php if($sh=='new') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New List"); ?></p></a>
 							</li>
 							<?php 
 							} ?>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="admin_search_lead.php" class="nav-link <?php if($sh=='search') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Search For A Lead"); ?></p></a>
 							</li>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="admin_modify_lead.php" class="nav-link <?php if($sh=='lead') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Add A New Lead"); ?></p></a>
 							</li>
 							<?php if ($LOGdelete_from_dnc > 0) {$DNClink = _QXZ("Add-Delete DNC Number");}
 							else {$DNClink = _QXZ("Add DNC Number");}?>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="<?php echo $ADMIN ?>?ADD=121" class="nav-link <?php if($sh=='dnc') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo $DNClink ?></p></a>
 							</li>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="./admin_listloader_fourth_gen.php" class="nav-link <?php if($sh=='load') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Load New Leads"); ?></p></a>
 							</li>
 							<?php
@@ -1975,10 +1975,10 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 							{
 								$admin_lists_custom = 'admin_lists_custom.php';
 							?>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="./<?php echo $admin_lists_custom ?>" class="nav-link <?php if($sh=='custom') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("List Custom Fields"); ?></p></a>
 							</li>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="./<?php echo $admin_lists_custom ?>?action=COPY_FIELDS_FORM" class="nav-link <?php if($sh=='cpcust') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Copy Custom Fields"); ?></p></a>
 							</li>
 							<?php
@@ -1986,7 +1986,7 @@ if ($subcamp_font_size < 4) {$subcamp_font_size='11';}
 							if ($SSenable_drop_lists > 0)
 							{
 							?>
-							<li class="nav-item">
+							<li class="nav-item d-none">
 								<a href="<?php echo $ADMIN ?>?ADD=130" class="nav-link <?php if($sh=='droplist') echo 'active'; ?>"><i class="far fa-circle nav-icon"></i><p><?php echo _QXZ("Drop Lists"); ?></p></a>
 							</li>
 							<?php
