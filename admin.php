@@ -6571,7 +6571,8 @@ echo "<script language=\"JavaScript\" src=\"help.js\"></script>\n";
 	<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 	<link rel="stylesheet" href="dist/css/adminlte.min.css">
 	<link rel="stylesheet" href="dist/css/custom_style.css">
-	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+
 	
 	<script language="JavaScript" src="plugins/jquery/jquery.min.js"></script>
 	<script language="JavaScript" src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -6580,6 +6581,7 @@ echo "<script language=\"JavaScript\" src=\"help.js\"></script>\n";
 	<script language="JavaScript" src="plugins/moment/moment.min.js"></script>
 	<script language="JavaScript" src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 	<script language="JavaScript" src="dist/js/adminlte.js"></script>
+	<script language="JavaScript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
 	
 	<?php
 /* fin scripts plantillado nuevo */
@@ -7823,9 +7825,25 @@ if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999
 		$o++;
 		}
 	}
+?>
+	<script>
+		function FillAndShowHelpDivAjax(e, help_id)
+		{
+			var help_text_id=help_id.replace("#", "");
+			$.ajax({
+				method: "POST",
+				url: "display_help.php",
+				data: { action: "grab_help_text", help_id: help_text_id }
+			})
+			.done(function( data ) {
+				Swal.fire(data.split('|')[0],data.split('|')[1] );
+			});
+		}
+	</script>
 
-$NWB = "<IMG SRC=\"help.png\" onClick=\"FillAndShowHelpDiv(event, '";
-$NWE = "')\" WIDTH=20 HEIGHT=20 BORDER=0 ALT=\"HELP\" ALIGN=TOP>";
+<?php
+$NWB = "onClick=\"FillAndShowHelpDivAjax(event, '";
+$NWE = "')\"";
 
 
 
@@ -8281,17 +8299,7 @@ if ($ADD=="1A")
 		echo '<div class="container-fluid">';
 			echo '<div class="row">';
 				echo '<div class="col-12">';
-					echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("COPY USER").':</label>';
-						// if (preg_match('/display_all/',$status))
-						// {
-						// 	$SQLstatus = '';
-						// 	echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A\" class='text-body'>"._QXZ("show only active users")."</a>\n";
-						// }
-						// else
-						// {
-						// 	$SQLstatus = "and active='Y'";
-						// 	echo " &nbsp; <a href=\"$PHP_SELF?ADD=0A&status=display_all\" class='text-body'>"._QXZ("show all users")."</a>\n";
-						// }
+					echo '<p class="mb-0"><label class="font-weight-lighter h2"><i class="fa fa-users"></i> '._QXZ("COPY USER").'</label>';
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
@@ -8327,7 +8335,7 @@ if ($ADD=="1A")
 								echo '</div>';
 							}
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
@@ -8337,14 +8345,14 @@ if ($ADD=="1A")
 						echo '<div class="input-group mb-1">';
 							echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE ><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
 						echo '<div class="input-group mb-1">';
 							echo '<input type="text" class="form-control">';
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE ><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 
@@ -8368,7 +8376,7 @@ if ($ADD=="1A")
 								echo "$Uusers_list";
 							echo '</select>';
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						
