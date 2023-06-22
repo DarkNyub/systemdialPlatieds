@@ -1381,14 +1381,14 @@ if ( ($api_list_restrict > 0) and ( ($function == 'add_lead') or ($function == '
 
 
 ################################################################################
-### records_list_api - sends a list of the sounds in the audio store
+### records_list_api - sends a list of the recording in the audio store
 ################################################################################
 if ($function == 'records_list_api')
 {
 	if(isset($_GET["agent_user"])){
 		$agent_user = "rl.`user` != ''";
 		if($_GET["agent_user"] != "all")
-			$agent_user = "lower(rl.`user`) = lower('".$_GET['agent_user']."')";
+			$agent_user = " lower(rl.`user`) = lower('".$_GET['agent_user']."')";
 	}
 	if(isset($_GET["fecha_inicio"])){
 		$fechaini = "";
@@ -1420,7 +1420,7 @@ if ($function == 'records_list_api')
 			$row = mysqli_fetch_object($rslt);
 			foreach($row as $key => $value) {
 				if($key == "location")
-					$value = str_replace("http://200.25.27.48","https://systemdial10.xolit.com", $value);
+					$value = str_replace("http://200.25.2.106","https://systemdial11.xolit.com", $value);
 				$jsontext .= "\"".addslashes($key)."\":\"".addslashes($value)."\",";
 			}
 			$jsontext = substr_replace($jsontext, '', -1); // to get rid of extra comma
@@ -1433,7 +1433,7 @@ if ($function == 'records_list_api')
 		echo $jsontext;
 	}
 	else{
-		 echo "{[]}";
+		echo "{[]}";
 	}
 	
 	exit;
