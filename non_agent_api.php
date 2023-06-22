@@ -1388,7 +1388,7 @@ if ($function == 'records_list_api')
 	if(isset($_GET["agent_user"])){
 		$agent_user = "rl.`user` != ''";
 		if($_GET["agent_user"] != "all")
-			$agent_user = "lower(rl.`user`) = lower('".$_GET['agent_user']."')";
+			$agent_user = " lower(rl.`user`) = lower('".$_GET['agent_user']."')";
 	}
 	if(isset($_GET["fecha_inicio"])){
 		$fechaini = "";
@@ -1407,7 +1407,7 @@ if ($function == 'records_list_api')
 	}
 
 	Header ("Content-type: text/json; charset=utf-8");
-	$stmt = "SELECT vle.uniqueid, val.`status` AS tipificacion, (SELECT UPPER(status_name) FROM (SELECT status, status_name FROM vicidial_statuses UNION SELECT status, status_name FROM vicidial_campaign_statuses) as vcs WHERE val.`status` = vcs.`status`) AS nombre_tipificacion, cl.number_dialed AS telefono, rl.`user` AS asesor, rl.start_time, rl.end_time, val.campaign_id, rl.lead_id, (SELECT vlist.list_id FROM vicidial_lists as vlist WHERE lower(vlist.campaign_id) = LOWER(val.campaign_id)) as list_id, (SELECT UPPER(vlist.list_name) FROM vicidial_lists vlist WHERE lower(vlist.campaign_id) = LOWER(val.campaign_id)) as list_name, rl.location  FROM recording_log  rl JOIN vicidial_log_extended vle ON vle.uniqueid = rl.vicidial_id JOIN vicidial_agent_log val ON rl.vicidial_id = val.uniqueid JOIN call_log cl ON cl.uniqueid = rl.vicidial_id WHERE ".$agent_user.$fechaini.$fechafin.$tipificacion;
+	$stmt = "SELECT vle.uniqueid,vle.caller_code as id_call, val.`status` AS tipificacion, (SELECT UPPER(status_name) FROM (SELECT status, status_name FROM vicidial_statuses UNION SELECT status, status_name FROM vicidial_campaign_statuses) as vcs WHERE val.`status` = vcs.`status`) AS nombre_tipificacion, cl.number_dialed AS telefono, rl.`user` AS asesor, rl.start_time, rl.end_time, val.campaign_id, rl.lead_id, (SELECT vlist.list_id FROM vicidial_list AS vlist WHERE LOWER(vlist.lead_id) = LOWER(val.lead_id)) as list_id, (SELECT UPPER(vlists.list_name) FROM vicidial_lists vlists WHERE vlists.list_id = (SELECT vlist.list_id FROM vicidial_list AS vlist WHERE LOWER(vlist.lead_id) = LOWER(val.lead_id))) as list_name, rl.location  FROM recording_log  rl JOIN vicidial_log_extended vle ON vle.uniqueid = rl.vicidial_id JOIN vicidial_agent_log val ON rl.vicidial_id = val.uniqueid JOIN call_log cl ON cl.uniqueid = rl.vicidial_id WHERE ".$agent_user.$fechaini.$fechafin.$tipificacion;
 	$rslt=mysql_to_mysqli($stmt, $link);
 	if ($DB) {echo "$stmt\n";}
 	$results = mysqli_num_rows($rslt);
@@ -1420,7 +1420,7 @@ if ($function == 'records_list_api')
 			$row = mysqli_fetch_object($rslt);
 			foreach($row as $key => $value) {
 				if($key == "location")
-					$value = str_replace("http://200.25.27.48","https://systemdial10.xolit.com", $value);
+					$value = str_replace("http://200.25.2.106","https://systemdial11.xolit.com", $value);
 				$jsontext .= "\"".addslashes($key)."\":\"".addslashes($value)."\",";
 			}
 			$jsontext = substr_replace($jsontext, '', -1); // to get rid of extra comma
@@ -1433,7 +1433,7 @@ if ($function == 'records_list_api')
 		echo $jsontext;
 	}
 	else{
-		 echo "{[]}";
+		echo "{[]}";
 	}
 	
 	exit;
