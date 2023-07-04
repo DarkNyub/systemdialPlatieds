@@ -43739,7 +43739,7 @@ if ($ADD=="0A")
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-			$stmt="SELECT user,full_name,user_level,user_group,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
+			$stmt="SELECT user,full_name,user_level,user_group, phone_login,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
 			$rslt=mysql_to_mysqli($stmt, $link);
 			$people_to_print = mysqli_num_rows($rslt);			
 			echo '<div class="row">';
@@ -43751,6 +43751,7 @@ if ($ADD=="0A")
 								echo '<th class="">'._QXZ("FULL NAME").' </th>';
 								echo '<th class="">'._QXZ("LEVEL").' </th>';
 								echo '<th class="">'._QXZ("GROUP").' </th>';
+								echo '<th class="">'._QXZ("PHONE").' </th>';
 								echo '<th class="">'._QXZ("ACTIVE").' </th>';
 								echo '<th class="">'._QXZ("MODIFY").' </th>';
 								echo '<th class="">'._QXZ("STATS").' </th>';
@@ -43769,7 +43770,8 @@ if ($ADD=="0A")
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
-									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[4]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[5]")."</td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
@@ -43782,7 +43784,7 @@ if ($ADD=="0A")
 				echo '</div>';
 			echo '</div>';
 		echo '</div>';
-		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
+		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": true,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
 
 /*
 	echo "<TABLE><TR><TD>\n";
@@ -47761,7 +47763,7 @@ if ($ADD==999999)
 														if ( (preg_match("/Real-Time Main Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 														{?>
 															<li class="nav-item">
-																<a class="nav-link" href="realtime_report.php?RR=4&DB=0&groups[]=ALL-ACTIVE&user_group_filter[]=ALL-GROUPS&user_group_filter[]=ALL-GROUPS&ingroup_filter[]=ALL-INGROUPS&adastats=1&SIPmonitorLINK=&IAXmonitorLINK=&usergroup=&UGdisplay=1&UidORname=1&orderby=timeup&SERVdisplay=0&CALLSdisplay=1&PHONEdisplay=1&CUSTPHONEdisplay=1&with_inbound=Y&monitor_active=WHISPER&monitor_phone=103&ALLINGROUPstats=&DROPINGROUPstats=0&NOLEADSalert=&CARRIERstats=0&PRESETstats=0&AGENTtimeSTATS=0&parkSTATS=0&SLAinSTATS=0&INGROUPcolorOVERRIDE=0&droppedOFtotal=0&report_display_type=HTML#"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
+																<a class="nav-link" href="realtime_report.php?RR=4&DB=0&groups[]=ALL-ACTIVE&user_group_filter[]=ALL-GROUPS&user_group_filter[]=ALL-GROUPS&ingroup_filter[]=ALL-INGROUPS&adastats=1&SIPmonitorLINK=&IAXmonitorLINK=&usergroup=&UGdisplay=1&UidORname=1&orderby=timeup&SERVdisplay=0&CALLSdisplay=1&PHONEdisplay=1&CUSTPHONEdisplay=1&with_inbound=Y&monitor_active=WHISPER&monitor_phone=101&ALLINGROUPstats=&DROPINGROUPstats=0&NOLEADSalert=&CARRIERstats=0&PRESETstats=0&AGENTtimeSTATS=0&parkSTATS=0&SLAinSTATS=0&INGROUPcolorOVERRIDE=0&droppedOFtotal=0&report_display_type=HTML#"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
 															</li>
 														<?php 
 														}
