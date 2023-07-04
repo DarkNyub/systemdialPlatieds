@@ -7839,6 +7839,7 @@ if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999
 		});
 	}
 </script>
+
 <?php
 
 $NWB = "onClick=\"NewFillAndShowHelpDiv(event, '";
@@ -8332,11 +8333,7 @@ if ($ADD=="1A")
 								echo '</div>';
 							}
 							echo '<div class="input-group-append">';
-<<<<<<< HEAD
-								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
-=======
 								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
->>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
@@ -8346,22 +8343,14 @@ if ($ADD=="1A")
 						echo '<div class="input-group mb-1">';
 							echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
 							echo '<div class="input-group-append">';
-<<<<<<< HEAD
-							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE><i class='fas fa-question'></i></span>";
-=======
 							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE ><i class='fas fa-question'></i></span>";
->>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
 						echo '<div class="input-group mb-1">';
 							echo '<input type="text" class="form-control">';
 							echo '<div class="input-group-append">';
-<<<<<<< HEAD
 							echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE><i class='fas fa-question'></i></span>";
-=======
-								echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE ><i class='fas fa-question'></i></span>";
->>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 
@@ -8385,11 +8374,7 @@ if ($ADD=="1A")
 								echo "$Uusers_list";
 							echo '</select>';
 							echo '<div class="input-group-append">';
-<<<<<<< HEAD
 							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
-=======
-							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
->>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						
