@@ -6580,6 +6580,7 @@ echo "<script language=\"JavaScript\" src=\"help.js\"></script>\n";
 	<script language="JavaScript" src="plugins/moment/moment.min.js"></script>
 	<script language="JavaScript" src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 	<script language="JavaScript" src="dist/js/adminlte.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	
 	<?php
 /* fin scripts plantillado nuevo */
@@ -7808,6 +7809,7 @@ if ( ($ADD==298111111111) or ($ADD==398111111111) or ($ADD==498111111111) or ($A
 
 
 if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999) ) or ($ADD=='141111111111') or ($ADD=='140111111111') or ($ADD=='341111111111') or ($ADD=='311111111111111') or ( (strlen($ADD)>4) and ($ADD < 99998) ) or ($ADD==3) or (($ADD>20) and ($ADD<70)) or ($ADD=="4A") or ($ADD=="4B") or (strlen($ADD)==12) )
+
 	{
 	##### get server listing for dynamic pulldown 
 	$stmt="SELECT server_ip,server_description,external_server_ip,active,active_asterisk_server from servers order by server_ip";
@@ -7824,10 +7826,23 @@ if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999
 		}
 	}
 
-$NWB = "<IMG SRC=\"help.png\" onClick=\"FillAndShowHelpDiv(event, '";
-$NWE = "')\" WIDTH=20 HEIGHT=20 BORDER=0 ALT=\"HELP\" ALIGN=TOP>";
+?>
+<script>
+	function NewFillAndShowHelpDiv (e, headDiv){
+		$.ajax({
+			url: 'display_help.php',
+			type: 'post',
+			data: {action:'grab_help_text',help_id: headDiv},
+			success: function(resp){
+				Swal.fire(resp.split('°')[0],resp.split('°')[1])
+			}
+		});
+	}
+</script>
+<?
 
-
+$NWB = "onClick=\"NewFillAndShowHelpDiv(event, '";
+$NWE = "')\"";
 
 if ($ADD==99999)
 	{
@@ -8327,7 +8342,7 @@ if ($ADD=="1A")
 								echo '</div>';
 							}
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
@@ -8337,14 +8352,14 @@ if ($ADD=="1A")
 						echo '<div class="input-group mb-1">';
 							echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
 						echo '<div class="input-group mb-1">';
 							echo '<input type="text" class="form-control">';
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 
@@ -8368,7 +8383,7 @@ if ($ADD=="1A")
 								echo "$Uusers_list";
 							echo '</select>';
 							echo '<div class="input-group-append">';
-								echo '<span class="input-group-text cursor_pointer"><i class="fas fa-question"></i></span>';
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
 							echo '</div>';
 						echo '</div>';
 						
