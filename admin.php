@@ -7810,6 +7810,7 @@ if ( ($ADD==298111111111) or ($ADD==398111111111) or ($ADD==498111111111) or ($A
 
 
 if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999) ) or ($ADD=='141111111111') or ($ADD=='140111111111') or ($ADD=='341111111111') or ($ADD=='311111111111111') or ( (strlen($ADD)>4) and ($ADD < 99998) ) or ($ADD==3) or (($ADD>20) and ($ADD<70)) or ($ADD=="4A") or ($ADD=="4B") or (strlen($ADD)==12) )
+
 	{
 	##### get server listing for dynamic pulldown 
 	$stmt="SELECT server_ip,server_description,external_server_ip,active,active_asterisk_server from servers order by server_ip";
@@ -7826,26 +7827,22 @@ if ( (strlen($ADD)==11) or (strlen($ADD)>12) or ( ($ADD > 1299) and ($ADD < 9999
 		}
 	}
 ?>
-	<script>
-		function FillAndShowHelpDivAjax(e, help_id)
-		{
-			var help_text_id=help_id.replace("#", "");
-			$.ajax({
-				method: "POST",
-				url: "display_help.php",
-				data: { action: "grab_help_text", help_id: help_text_id }
-			})
-			.done(function( data ) {
-				Swal.fire(data.split('|')[0],data.split('|')[1] );
-			});
-		}
-	</script>
-
+<script>
+	function NewFillAndShowHelpDiv (e, headDiv){
+		$.ajax({
+			url: 'display_help.php',
+			type: 'post',
+			data: {action:'grab_help_text',help_id: headDiv},
+			success: function(resp){
+				Swal.fire(resp.split('°')[0],resp.split('°')[1])
+			}
+		});
+	}
+</script>
 <?php
-$NWB = "onClick=\"FillAndShowHelpDivAjax(event, '";
+
+$NWB = "onClick=\"NewFillAndShowHelpDiv(event, '";
 $NWE = "')\"";
-
-
 
 if ($ADD==99999)
 	{
@@ -8335,7 +8332,11 @@ if ($ADD=="1A")
 								echo '</div>';
 							}
 							echo '<div class="input-group-append">';
+<<<<<<< HEAD
+								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
+=======
 								echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
+>>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Password").'</label>';
@@ -8345,14 +8346,22 @@ if ($ADD=="1A")
 						echo '<div class="input-group mb-1">';
 							echo "<input type=text class='form-control' id=reg_pass name=pass maxlength=100 onkeyup=\"return pwdChanged('reg_pass','reg_pass_img','pass_length','$SSrequire_password_length');\">";
 							echo '<div class="input-group-append">';
+<<<<<<< HEAD
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE><i class='fas fa-question'></i></span>";
+=======
 							echo "<span class='input-group-text cursor_pointer' $NWB#users-pass$NWE ><i class='fas fa-question'></i></span>";
+>>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						echo '<label for="exampleInputEmail1" class="mb-0">'._QXZ("Full Name").'</label>';
 						echo '<div class="input-group mb-1">';
 							echo '<input type="text" class="form-control">';
 							echo '<div class="input-group-append">';
+<<<<<<< HEAD
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE><i class='fas fa-question'></i></span>";
+=======
 								echo "<span class='input-group-text cursor_pointer' $NWB#users-full_name$NWE ><i class='fas fa-question'></i></span>";
+>>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 
@@ -8376,7 +8385,11 @@ if ($ADD=="1A")
 								echo "$Uusers_list";
 							echo '</select>';
 							echo '<div class="input-group-append">';
+<<<<<<< HEAD
+							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE><i class='fas fa-question'></i></span>";
+=======
 							echo "<span class='input-group-text cursor_pointer' $NWB#users-user$NWE ><i class='fas fa-question'></i></span>";
+>>>>>>> c0d0655c71f0688a810a1ed53df8034cdbaffc66
 							echo '</div>';
 						echo '</div>';
 						
@@ -43747,7 +43760,7 @@ if ($ADD=="0A")
 					echo '</p>';
 				echo '</div>';
 			echo '</div>';
-			$stmt="SELECT user,full_name,user_level,user_group,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
+			$stmt="SELECT user,full_name,user_level,user_group, phone_login,active from vicidial_users  where user_level <= $LOGuser_level $LOGadmin_viewable_groupsSQL $SQLstatus $SQLorder";
 			$rslt=mysql_to_mysqli($stmt, $link);
 			$people_to_print = mysqli_num_rows($rslt);			
 			echo '<div class="row">';
@@ -43759,6 +43772,7 @@ if ($ADD=="0A")
 								echo '<th class="">'._QXZ("FULL NAME").' </th>';
 								echo '<th class="">'._QXZ("LEVEL").' </th>';
 								echo '<th class="">'._QXZ("GROUP").' </th>';
+								echo '<th class="">'._QXZ("PHONE").' </th>';
 								echo '<th class="">'._QXZ("ACTIVE").' </th>';
 								echo '<th class="">'._QXZ("MODIFY").' </th>';
 								echo '<th class="">'._QXZ("STATS").' </th>';
@@ -43777,7 +43791,8 @@ if ($ADD=="0A")
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[1]</td>";
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[2]</td>";
 									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[3]</td>";
-									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[4]")."</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">$row[4]</td>";
+									echo "<td"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo ">"._QXZ("$row[5]")."</td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='$PHP_SELF?ADD=3&user=$row[0]'\"";} echo "><a href=\"$PHP_SELF?ADD=3&user=$row[0]\">"._QXZ("MODIFY")."</a></td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_stats.php?user=$row[0]'\"";} echo "><a href=\"./user_stats.php?user=$row[0]\">"._QXZ("STATS")."</a></td>";
 									echo "<td class='text-center'"; if ($SSadmin_row_clicka > 0) {echo " onclick=\"window.document.location='./user_status.php?user=$row[0]'\"";} echo "><a href=\"./user_status.php?user=$row[0]\">"._QXZ("STATUS")."</a></td>";
@@ -43790,7 +43805,7 @@ if ($ADD=="0A")
 				echo '</div>';
 			echo '</div>';
 		echo '</div>';
-		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": false,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
+		echo '<script>$(function () {$("#tableUsersList").DataTable({"paging": true,"lengthChange": true,"searching": true,"ordering": true,"info": true,"autoWidth": false,"responsive": true,order: [[1, "asc"]]});});</script>';
 
 /*
 	echo "<TABLE><TR><TD>\n";
@@ -47769,7 +47784,7 @@ if ($ADD==999999)
 														if ( (preg_match("/Real-Time Main Report/",$LOGallowed_reports)) or (preg_match("/ALL REPORTS/",$LOGallowed_reports)) )
 														{?>
 															<li class="nav-item">
-																<a class="nav-link" href="realtime_report.php?RR=4&DB=0&groups[]=ALL-ACTIVE&user_group_filter[]=ALL-GROUPS&user_group_filter[]=ALL-GROUPS&ingroup_filter[]=ALL-INGROUPS&adastats=1&SIPmonitorLINK=&IAXmonitorLINK=&usergroup=&UGdisplay=1&UidORname=1&orderby=timeup&SERVdisplay=0&CALLSdisplay=1&PHONEdisplay=1&CUSTPHONEdisplay=1&with_inbound=Y&monitor_active=WHISPER&monitor_phone=103&ALLINGROUPstats=&DROPINGROUPstats=0&NOLEADSalert=&CARRIERstats=0&PRESETstats=0&AGENTtimeSTATS=0&parkSTATS=0&SLAinSTATS=0&INGROUPcolorOVERRIDE=0&droppedOFtotal=0&report_display_type=HTML#"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
+																<a class="nav-link" href="realtime_report.php?RR=4&DB=0&groups[]=ALL-ACTIVE&user_group_filter[]=ALL-GROUPS&user_group_filter[]=ALL-GROUPS&ingroup_filter[]=ALL-INGROUPS&adastats=1&SIPmonitorLINK=&IAXmonitorLINK=&usergroup=&UGdisplay=1&UidORname=1&orderby=timeup&SERVdisplay=0&CALLSdisplay=1&PHONEdisplay=1&CUSTPHONEdisplay=1&with_inbound=Y&monitor_active=WHISPER&monitor_phone=101&ALLINGROUPstats=&DROPINGROUPstats=0&NOLEADSalert=&CARRIERstats=0&PRESETstats=0&AGENTtimeSTATS=0&parkSTATS=0&SLAinSTATS=0&INGROUPcolorOVERRIDE=0&droppedOFtotal=0&report_display_type=HTML#"><i class="far fa-circle text-danger"></i> <?php echo _QXZ("Real-Time Main Report") ?></a>
 															</li>
 														<?php 
 														}

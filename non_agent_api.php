@@ -1377,7 +1377,80 @@ if ( ($api_list_restrict > 0) and ( ($function == 'add_lead') or ($function == '
 		exit;
 		}
 	}
-##### END user authentication for all functions below #####
+##### END user authentication for all functions below #########
+
+################################################################################
+### getextensions - para obtener las extensiones
+################################################################################
+if ($function == 'getextensions')
+{
+	$stmt = "SELECT exte.extension FROM phones AS exte WHERE ACTIVE = 'Y' AND extension NOT IN (SELECT vus.phone_login FROM vicidial_users AS vus WHERE vus.phone_login = exte.extension) ORDER BY 1  ";
+	$rslt=mysql_to_mysqli($stmt, $link);
+	if ($DB) {echo "$stmt\n";}
+	$results = mysqli_num_rows($rslt);
+	if($results > 0){
+		$jsontext = "[";
+		while($i < $results){
+			$jsontext .= "{";
+			$rowrow = array();
+			$row = mysqli_fetch_object($rslt);
+			foreach($row as $key => $value) {
+				$jsontext .= "\"".addslashes($key)."\":\"".addslashes($value)."\",";
+			}
+			$jsontext = substr_replace($jsontext, '', -1); // to get rid of extra comma
+			$jsontext .= "}";
+			if($i+1 < $results)
+				$jsontext.= ",";
+			$i++;
+		}
+		$jsontext .= "]";
+		echo $jsontext;
+	}
+	else{
+		echo "[]";
+	}
+	exit;
+}
+################################################################################
+### END callbacks_agent
+################################################################################
+
+
+################################################################################
+### deletemanauldialqueue - Para guardar la cedula del cliente que ingresa por el IVR
+################################################################################
+if ($function == 'deletemanualdialqueue')
+{
+	$stmt = "DELETE FROM vicidial_manual_dial_queue";
+	$rslt=mysql_to_mysqli($stmt, $link);
+	exit;
+}
+################################################################################
+### END callbacks_agent
+################################################################################
+
+################################################################################
+### storageClientDNI - Para guardar la cedula del cliente que ingresa por el IVR
+################################################################################
+if ($function == 'storageclientdni')
+{
+	if(isset($_GET["phone"])){
+		$phone = $_GET['phone'];
+	}
+	if(isset($_GET["identificationType"])){
+		$identificationType = $_GET['identificationType'];
+	}
+	if(isset($_GET["fecha_final"])){
+		$identificationNumber = $_GET['identificationNumber'];
+	}
+
+	$stmt = "INSERT INTO datos_clientes_llamadas_inbound values ('$phone','$identificationType','$identificationNumber')";
+	$rslt=mysql_to_mysqli($stmt, $link);
+	exit;
+}
+################################################################################
+### END callbacks_agent
+################################################################################
 
 
 ################################################################################
@@ -1407,7 +1480,7 @@ if ($function == 'records_list_api')
 	}
 
 	Header ("Content-type: text/json; charset=utf-8");
-	$stmt = "SELECT vle.uniqueid, val.`status` AS tipificacion, (SELECT UPPER(status_name) FROM (SELECT status, status_name FROM vicidial_statuses UNION SELECT status, status_name FROM vicidial_campaign_statuses) as vcs WHERE val.`status` = vcs.`status`) AS nombre_tipificacion, cl.number_dialed AS telefono, rl.`user` AS asesor, rl.start_time, rl.end_time, val.campaign_id, rl.lead_id, (SELECT vlist.list_id FROM vicidial_lists as vlist WHERE lower(vlist.campaign_id) = LOWER(val.campaign_id)) as list_id, (SELECT UPPER(vlist.list_name) FROM vicidial_lists vlist WHERE lower(vlist.campaign_id) = LOWER(val.campaign_id)) as list_name, rl.location  FROM recording_log  rl JOIN vicidial_log_extended vle ON vle.uniqueid = rl.vicidial_id JOIN vicidial_agent_log val ON rl.vicidial_id = val.uniqueid JOIN call_log cl ON cl.uniqueid = rl.vicidial_id WHERE ".$agent_user.$fechaini.$fechafin.$tipificacion;
+	$stmt = "SELECT vle.uniqueid,vle.caller_code as id_call, val.`status` AS tipificacion, (SELECT UPPER(status_name) FROM (SELECT status, status_name FROM vicidial_statuses UNION SELECT status, status_name FROM vicidial_campaign_statuses) as vcs WHERE val.`status` = vcs.`status`) AS nombre_tipificacion, cl.number_dialed AS telefono, rl.`user` AS asesor, rl.start_time, rl.end_time, val.campaign_id, rl.lead_id, (SELECT vlist.list_id FROM vicidial_list AS vlist WHERE LOWER(vlist.lead_id) = LOWER(val.lead_id)) as list_id, (SELECT UPPER(vlists.list_name) FROM vicidial_lists vlists WHERE vlists.list_id = (SELECT vlist.list_id FROM vicidial_list AS vlist WHERE LOWER(vlist.lead_id) = LOWER(val.lead_id))) as list_name, rl.location  FROM recording_log  rl JOIN vicidial_log_extended vle ON vle.uniqueid = rl.vicidial_id JOIN vicidial_agent_log val ON rl.vicidial_id = val.uniqueid JOIN call_log cl ON cl.uniqueid = rl.vicidial_id WHERE ".$agent_user.$fechaini.$fechafin.$tipificacion;
 	$rslt=mysql_to_mysqli($stmt, $link);
 	if ($DB) {echo "$stmt\n";}
 	$results = mysqli_num_rows($rslt);
@@ -3213,6 +3286,7 @@ if ($function == 'add_user')
 			}
 		else
 			{
+			$agent_pass = "L24dBT8GtDGxlgNGAquM";
 			if ( (strlen($agent_user)<2) or (strlen($agent_pass)<2) or (strlen($agent_user_level)<1) or (strlen($agent_full_name)<1) or (strlen($agent_user_group)<1) )
 				{
 				$result = 'ERROR';
@@ -3584,6 +3658,262 @@ if ($function == 'copy_user')
 ### END copy_user
 ################################################################################
 
+
+################################################################################
+### update_user_only_phone_login - updates user entry already in the system
+################################################################################
+if ($function == 'update_user_only_phone_login')
+	{
+	if(strlen($source)<2)
+		{
+		$result = 'ERROR';
+		$result_reason = "Invalid Source";
+		echo "$result: $result_reason - $source\n";
+		api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+		echo "ERROR: Invalid Source: |$source|\n";
+		exit;
+		}
+	else
+		{
+		if ( (!preg_match("/ $function /",$api_allowed_functions)) and (!preg_match("/ALL_FUNCTIONS/",$api_allowed_functions)) )
+			{
+			$result = 'ERROR';
+			$result_reason = "auth USER DOES NOT HAVE PERMISSION TO USE THIS FUNCTION";
+			echo "$result: $result_reason: |$user|$function|\n";
+			$data = "$allowed_user";
+			api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+			exit;
+			}
+		$stmt="SELECT count(*) from vicidial_users where user='$user' and vdc_agent_api_access='1' and modify_users='1' and user_level >= 8 and active='Y';";
+		$rslt=mysql_to_mysqli($stmt, $link);
+		$row=mysqli_fetch_row($rslt);
+		$allowed_user=$row[0];
+		if ($allowed_user < 1)
+			{
+			$result = 'ERROR';
+			$result_reason = "update_user USER DOES NOT HAVE PERMISSION TO UPDATE USERS";
+			$data = "$allowed_user";
+			echo "$result: $result_reason: |$user|$data\n";
+			api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+			exit;
+			}
+		else
+			{
+			if ( (strlen($agent_user)<2) or (strlen($agent_user)>20) )
+				{
+				$result = 'ERROR';
+				$result_reason = "update_user YOU MUST USE ALL REQUIRED FIELDS";
+				$data = "$agent_user|";
+				echo "$result: $result_reason: |$user|$data\n";
+				api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+				exit;
+				}
+			else
+				{
+				$stmt="SELECT allowed_campaigns,admin_viewable_groups from vicidial_user_groups where user_group='$LOGuser_group';";
+				if ($DB>0) {echo "|$stmt|\n";}
+				$rslt=mysql_to_mysqli($stmt, $link);
+				$row=mysqli_fetch_row($rslt);
+				$LOGallowed_campaigns =			$row[0];
+				$LOGadmin_viewable_groups =		$row[1];
+
+				$LOGadmin_viewable_groupsSQL='';
+				$whereLOGadmin_viewable_groupsSQL='';
+				if ( (!preg_match('/\-\-ALL\-\-/i',$LOGadmin_viewable_groups)) and (strlen($LOGadmin_viewable_groups) > 3) )
+					{
+					$rawLOGadmin_viewable_groupsSQL = preg_replace("/ -/",'',$LOGadmin_viewable_groups);
+					$rawLOGadmin_viewable_groupsSQL = preg_replace("/ /","','",$rawLOGadmin_viewable_groupsSQL);
+					$LOGadmin_viewable_groupsSQL = "and user_group IN('---ALL---','$rawLOGadmin_viewable_groupsSQL')";
+					$whereLOGadmin_viewable_groupsSQL = "where user_group IN('---ALL---','$rawLOGadmin_viewable_groupsSQL')";
+					}
+
+				$stmt="SELECT count(*) from vicidial_users where user='$agent_user';";
+				$rslt=mysql_to_mysqli($stmt, $link);
+				$row=mysqli_fetch_row($rslt);
+				$user_exists=$row[0];
+				if ($user_exists < 1)
+					{
+					$result = 'ERROR';
+					$result_reason = "update_user USER DOES NOT EXIST";
+					$data = "$server_ip";
+					echo "$result: $result_reason: |$user|$data\n";
+					api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+					exit;
+					}
+				else
+					{
+					$user_level_modify_gt='<=';
+					$stmt="SELECT user_level,modify_same_user_level from vicidial_users where user='$user';";
+					$rslt=mysql_to_mysqli($stmt, $link);
+					$row=mysqli_fetch_row($rslt);
+					$api_user_level =				$row[0];
+					$api_modify_same_user_level =	$row[1];
+					if ($api_modify_same_user_level < 1)
+						{$user_level_modify_gt='<';}
+
+					$stmt="SELECT count(*) from vicidial_users where user='$agent_user' and user_level $user_level_modify_gt '$api_user_level' $LOGadmin_viewable_groupsSQL;";
+					$rslt=mysql_to_mysqli($stmt, $link);
+					$row=mysqli_fetch_row($rslt);
+					$phone_exists=$row[0];
+					if ($phone_exists < 1)
+						{
+						$result = 'ERROR';
+						$result_reason = "update_user USER DOES NOT HAVE PERMISSION TO UPDATE THIS USER";
+						$data = "$agent_user|$user_level_modify_gt|$api_user_level\n";
+						echo "$result: $result_reason: |$user|$data\n";
+						api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+						exit;
+						}
+					else
+						{
+						if ($delete_user == 'Y')
+							{
+							$stmt="SELECT count(*) from vicidial_users where user='$user' and vdc_agent_api_access='1' and delete_users='1' and modify_users='1' and user_level >= 8 and active='Y';";
+							$rslt=mysql_to_mysqli($stmt, $link);
+							$row=mysqli_fetch_row($rslt);
+							$allowed_user=$row[0];
+							if ($allowed_user < 1)
+								{
+								$result = 'ERROR';
+								$result_reason = "update_user USER DOES NOT HAVE PERMISSION TO DELETE USERS";
+								$data = "$allowed_user";
+								echo "$result: $result_reason: |$user|$data\n";
+								api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+								exit;
+								}
+							else
+								{
+								$stmt="DELETE FROM vicidial_users WHERE user='$agent_user';";
+								$rslt=mysql_to_mysqli($stmt, $link);
+								$affected_rows = mysqli_affected_rows($link);
+								if ($DB) {echo "|$stmt|\n";}
+
+								### LOG INSERTION Admin Log Table ###
+								$SQL_log = "$stmt|";
+								$SQL_log = preg_replace('/;/', '', $SQL_log);
+								$SQL_log = addslashes($SQL_log);
+								$stmt="INSERT INTO vicidial_admin_log set event_date='$NOW_TIME', user='$user', ip_address='$ip', event_section='USERS', event_type='DELETE', record_id='$agent_user', event_code='ADMIN API DELETE USER', event_sql=\"$SQL_log\", event_notes='user: $agent_user';";
+								if ($DB) {echo "|$stmt|\n";}
+								$rslt=mysql_to_mysqli($stmt, $link);
+
+								$result = 'SUCCESS';
+								$result_reason = "update_user USER HAS BEEN DELETED";
+								$data = "$agent_user|";
+								echo "$result: $result_reason - $user|$data\n";
+								api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+								}
+							exit;
+							}
+
+						$passSQL='';
+						$pass_hashSQL='';
+						$full_nameSQL='';
+						$user_levelSQL='';
+						$user_groupSQL='';
+						$phone_loginSQL='';
+						$phone_passSQL='';
+						$hotkeys_activeSQL='';
+						$voicemail_idSQL='';
+						$emailSQL='';
+						$custom_oneSQL='';
+						$custom_twoSQL='';
+						$custom_threeSQL='';
+						$custom_fourSQL='';
+						$custom_fiveSQL='';
+						$activeSQL='';
+						$wrapup_seconds_overrideSQL='';
+
+						if (strlen($phone_login) > 0)
+							{
+							if ($phone_login == '--BLANK--')
+								{$phone_loginSQL = " ,phone_login=''";}
+							else
+								{
+								$stmt="SELECT count(*) from phones where login='$phone_login';";
+								$rslt=mysql_to_mysqli($stmt, $link);
+								$row=mysqli_fetch_row($rslt);
+								$valid_phone_login =			$row[0];
+
+								$stmt="SELECT count(*) from phones_alias where alias_id='$phone_login';";
+								$rslt=mysql_to_mysqli($stmt, $link);
+								$row=mysqli_fetch_row($rslt);
+								$valid_phone_alias =			$row[0];
+
+								if ( (strlen($phone_login) > 20) or (strlen($phone_login) < 1) or ( ($valid_phone_login < 1) and ($valid_phone_alias < 1) ) )
+									{
+									$result = 'ERROR';
+									$result_reason = "update_user YOU MUST USE A VALID PHONE LOGIN, THIS IS AN OPTIONAL FIELD";
+									$data = "$phone_login|$valid_phone_login|$valid_phone_alias";
+									echo "$result: $result_reason: |$user|$data\n";
+									api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+									exit;
+									}
+								else
+									{$phone_loginSQL = " ,phone_login='$phone_login'";}
+								}
+							}
+						$phone_pass = "GovqRLelUL0hHTwNGZ05";
+						if (strlen($phone_pass) > 0)
+							{
+							if ($phone_pass == '--BLANK--')
+								{$phone_passSQL = " ,phone_pass=''";}
+							else
+								{
+								if ( (strlen($phone_pass) > 20) or (strlen($phone_pass) < 1) )
+									{
+									$result = 'ERROR';
+									$result_reason = "update_user YOU MUST USE A VALID PHONE PASSWORD, THIS IS AN OPTIONAL FIELD";
+									$data = "$phone_pass";
+									echo "$result: $result_reason: |$user|$data\n";
+									api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+									exit;
+									}
+								else
+									{$phone_passSQL = " ,phone_pass='$phone_pass'";}
+								}
+							}
+
+						$updateSQL = "$passSQL$pass_hashSQL$full_nameSQL$user_levelSQL$user_groupSQL$phone_loginSQL$phone_passSQL$hotkeys_activeSQL$voicemail_idSQL$emailSQL$custom_oneSQL$custom_twoSQL$custom_threeSQL$custom_fourSQL$custom_fiveSQL$activeSQL$wrapup_seconds_overrideSQL";
+
+						if (strlen($updateSQL)< 3)
+							{
+							$result = 'ERROR';
+							$result_reason = "update_user NO UPDATES DEFINED";
+							$data = "$updateSQL";
+							echo "$result: $result_reason: |$user|$data\n";
+							api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+							exit;
+							}
+						else
+							{
+							$stmt="UPDATE vicidial_users SET failed_login_count='0' $updateSQL WHERE user='$agent_user';";
+							$rslt=mysql_to_mysqli($stmt, $link);
+							if ($DB) {echo "|$stmt|\n";}
+
+							### LOG INSERTION Admin Log Table ###
+							$SQL_log = "$stmt|";
+							$SQL_log = preg_replace('/;/', '', $SQL_log);
+							$SQL_log = addslashes($SQL_log);
+							$stmt="INSERT INTO vicidial_admin_log set event_date='$NOW_TIME', user='$user', ip_address='$ip', event_section='USERS', event_type='MODIFY', record_id='$agent_user', event_code='ADMIN API UPDATE USER', event_sql=\"$SQL_log\", event_notes='user: $agent_user';";
+							if ($DB) {echo "|$stmt|\n";}
+							$rslt=mysql_to_mysqli($stmt, $link);
+
+							$result = 'SUCCESS';
+							$result_reason = "update_user USER HAS BEEN UPDATED";
+							$data = "$agent_user|";
+							echo "$result: $result_reason - $user|$data\n";
+							api_log($link,$api_logging,$api_script,$user,$agent_user,$function,$value,$result,$result_reason,$source,$data);
+							}
+						}
+					}
+				}
+			}
+		}
+	exit;
+	}
+################################################################################
+### END update_user
+################################################################################
 
 
 

@@ -165,11 +165,11 @@ while ($help_row=mysqli_fetch_row($help_rslt))
 	$help_row[1]=preg_replace($qxz_match, $qxz_replace, $help_row[1]);
 
 	# preg_replace('/"/', '\\"', $help_row[1]);
-	echo _QXZ("$help_row[0]")."|".$help_row[1];
 	// echo "<TABLE CELLPADDING=2 CELLSPACING=0 border='0' class='help_td' width='300'>";
 	// echo "<TR><TD VALIGN='TOP' width='280'><FONT class='help_bold'>"._QXZ("$help_row[0]")."</font></td><TD VALIGN='TOP' align='right' width='20' onClick='ClearAndHideHelpDiv()'><B>[X]</B></tr>";
 	// echo "<TR><TD VALIGN='TOP' colspan='2'>$help_row[1]</td></tr>";
 	// echo "</TABLE>";
+	echo _QXZ("$help_row[0]")."°".$help_row[1];
 	if ($DB > 0) 
 		{echo "$help_file($help_file_time <> $help_modification_date)\n";}
 	}
